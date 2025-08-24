@@ -1,0 +1,39 @@
+name: 部署文档到 GitHub Pages
+
+on:
+  push:
+    branches: [main]  # 当推送到 main 分支时触发
+  workflow_dispatch:
+
+# 设置权限
+permissions:
+  contents: write
+
+jobs:
+  # 部署工作
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # 获取完整历史记录
+
+      - name: 设置 Node.js 环境
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: npm
+
+      - name: 安装依赖
+        run: npm install
+
+      - name: 构建 VitePress 文档
+        run: npm run docs:build
+
+      - name: 部署到 GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs-src/.vitepress/dist
+          cname: # 如果有自定义域名，在这里设置

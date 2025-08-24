@@ -1,0 +1,36 @@
+name: Test Deploy
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  test-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Create simple test page
+        run: |
+          mkdir -p test-deploy
+          echo "<!DOCTYPE html>
+          <html>
+          <head>
+              <title>VantTable Test</title>
+          </head>
+          <body>
+              <h1>VantTable Documentation Test</h1>
+              <p>This is a test page to verify GitHub Pages deployment.</p>
+              <p>Time: $(date)</p>
+          </body>
+          </html>" > test-deploy/index.html
+      
+      - name: Deploy test page
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./test-deploy
+          cname: false

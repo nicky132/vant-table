@@ -1,0 +1,117 @@
+{
+  "name": "@nicky132/vant-table",
+  "version": "1.0.3",
+  "description": "基于 Vant UI 的功能丰富的表格组件，具备高级选择功能",
+  "keywords": [
+    "vue",
+    "vue3",
+    "vant",
+    "table",
+    "component",
+    "selection",
+    "fixed-columns",
+    "sorting",
+    "filtering",
+    "expandable"
+  ],
+  "author": "CC",
+  "license": "MIT",
+  "main": "./dist/index.umd.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "src",
+    "README.md",
+    "package.json"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.umd.js"
+    },
+    "./dist/*": "./dist/*"
+  },
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite build --watch",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "test:ui": "vitest --ui",
+    "type-check": "vue-tsc --noEmit",
+    "lint": "eslint src --ext .vue,.js,.jsx,.ts,.tsx",
+    "lint:fix": "eslint src --ext .vue,.js,.jsx,.ts,.tsx --fix",
+    "format": "prettier --write src/**/*.{vue,js,ts,jsx,tsx}",
+    "clean": "rimraf dist",
+    "prepublishOnly": "npm run clean && npm run build && npm run test:run",
+    "dev:src": "vite --config vite.dev-src.config.ts",
+    "dev:example": "vite --config vite.dev.config.ts",
+    "dev:demo": "vite --config vite.demo.config.ts",
+    "build:demo": "vite build --config vite.demo.config.ts",
+    "docs:dev": "vitepress dev docs-src",
+    "docs:build": "vitepress build docs-src",
+    "docs:preview": "vitepress preview docs-src",
+    "preview": "npm run build && npm pack --dry-run",
+    "lib": "BUILD_TARGET=lib vite build",
+    "version:alpha": "npm version prerelease --preid=alpha",
+    "version:beta": "npm version prerelease --preid=beta",
+    "version:rc": "npm version prerelease --preid=rc",
+    "version:patch": "npm version patch",
+    "version:minor": "npm version minor",
+    "version:major": "npm version major",
+    "publish:alpha": "npm run lib && npm publish --tag alpha",
+    "publish:beta": "npm run lib && npm publish --tag beta",
+    "publish:rc": "npm run lib && npm publish --tag rc",
+    "publish:latest": "npm run lib && npm publish --tag latest",
+    "release:alpha": "npm run version:alpha && npm run publish:alpha",
+    "release:beta": "npm run version:beta && npm run publish:beta",
+    "release:rc": "npm run version:rc && npm run publish:rc",
+    "release:patch": "npm run version:patch && npm run publish:latest",
+    "release:minor": "npm run version:minor && npm run publish:latest",
+    "release:major": "npm run version:major && npm run publish:latest",
+    "release": "node scripts/release.js",
+    "test:version": "node scripts/test-version.js"
+  },
+  "peerDependencies": {
+    "vant": "^4.0.0",
+    "vue": "^3.2.47"
+  },
+  "devDependencies": {
+    "@types/node": "^18.0.0",
+    "@vitejs/plugin-vue": "^4.2.1",
+    "@vitest/coverage-v8": "^3.2.4",
+    "@vitest/ui": "^3.2.4",
+    "@vue/test-utils": "^2.3.2",
+    "happy-dom": "^9.10.9",
+    "less": "^4.3.0",
+    "rimraf": "^3.0.2",
+    "sass": "^1.63.6",
+    "terser": "^5.43.1",
+    "typescript": "^5.0.4",
+    "vant": "^4.0.0",
+    "vite": "^4.3.5",
+    "vite-plugin-dts": "^4.2.3",
+    "vitepress": "1.0.0-rc.31",
+    "vitest": "^3.2.4",
+    "vue": "^3.2.47",
+    "vue-tsc": "^2.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nicky132/vant-table.git"
+  },
+  "homepage": "https://github.com/nicky132/vant-table",
+  "bugs": {
+    "url": "https://github.com/nicky132/vant-table/issues"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  }
+}

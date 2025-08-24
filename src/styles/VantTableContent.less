@@ -1,0 +1,357 @@
+/* ========== 选择列表头样式 ========== */
+.vant-th--selection {
+  text-align: center !important;
+  padding: 8px 4px !important;
+  background-color: var(--van-background) !important;
+  width: 48px !important;
+  min-width: 48px !important;
+  max-width: 48px !important;
+  vertical-align: middle !important;
+}
+
+/* 固定列中的选择列表头 */
+.vant-th--selection.vant-th--fixed {
+  text-align: center !important;
+  padding: 8px 4px !important;
+  background-color: var(--van-background) !important;
+  width: 48px !important;
+  min-width: 48px !important;
+  max-width: 48px !important;
+  vertical-align: middle !important;
+  background: var(--van-background) !important; /* 双重保险 */
+}
+
+.vant-selection-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  min-height: 48px; /* 确保与表头行高一致 */
+}
+
+.vant-selection-header__text {
+  font-size: 12px;
+  color: var(--van-text-color-2);
+  font-weight: 500;
+}
+
+/* ========== 展开列表头样式 ========== */
+.vant-th--expand {
+  text-align: center !important;
+  padding: 8px 4px !important;
+  width: 40px !important;
+  min-width: 40px !important;
+  max-width: 40px !important;
+  background-color: var(--van-background) !important;
+}
+
+/* 固定列中的展开列表头 */
+.vant-th--expand.vant-th--fixed {
+  text-align: center !important;
+  padding: 8px 4px !important;
+  width: 40px !important;
+  min-width: 40px !important;
+  max-width: 40px !important;
+  background-color: var(--van-background) !important;
+  background: var(--van-background) !important; /* 双重保险 */
+}
+
+.vant-th__content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+  padding: 2px 4px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+  min-height: 24px;
+  box-sizing: border-box;
+  flex-wrap: wrap;
+  word-wrap: break-word;
+  line-height: 1.4;
+  width: 100%;
+}
+
+.vant-th--sortable {
+  cursor: pointer;
+}
+
+/* 表头sortable hover效果 - 仅在PC端生效 */
+@media (hover: hover) and (pointer: fine) {
+  .vant-th--sortable .vant-th__content:hover {
+    background-color: rgba(0, 0, 0, 0.04);
+  }
+}
+
+.vant-th__text {
+  flex: 1;
+  font-size: 12px;
+  color: var(--van-text-color-2);
+  font-weight: 500;
+  word-wrap: break-word;
+  word-break: break-all;
+  white-space: normal;
+  line-height: 1.4;
+  min-height: 24px;
+  display: block;
+  width: 100%;
+}
+
+.vant-th__sort-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  margin-left: 4px;
+  flex-shrink: 0;
+}
+
+.vant-sort-icon {
+  display: block;
+  width: 12px;
+  height: 12px;
+}
+
+.vant-sort-icon__asc,
+.vant-sort-icon__desc {
+  fill: var(--van-text-color-3);
+  stroke: var(--van-text-color-3);
+  transition: fill 0.2s, stroke 0.2s;
+}
+
+.vant-sort-icon__asc.vant-sort-icon--active,
+.vant-sort-icon__desc.vant-sort-icon--active {
+  fill: var(--van-primary-color);
+  stroke: var(--van-primary-color);
+}
+
+/* 🔑 过滤图标样式 - 确保高优先级 */
+.vant-table-wrapper .vant-th__filter-icon {
+  display: inline-block !important;
+  font-size: 12px !important;
+  color: var(--van-text-color-3) !important;
+  cursor: pointer !important;
+  padding: 4px !important;
+  border-radius: 4px !important;
+  transition: all 0.2s !important;
+  margin-left: 4px !important;
+  background: transparent !important;
+  
+  /* 🔑 确保过滤图标在正确层级 */
+  position: relative !important;
+  z-index: 5 !important;
+  flex-shrink: 0 !important;
+}
+
+/* 过滤图标hover效果 - 仅在PC端生效 */
+@media (hover: hover) and (pointer: fine) {
+  .vant-table-wrapper .vant-th__filter-icon:hover {
+    background-color: rgba(2, 120, 255, 0.1) !important;
+    color: var(--van-primary-color) !important;
+  }
+}
+
+.vant-table-wrapper .vant-th__filter-icon--active {
+  background-color: var(--van-primary-color) !important;
+  color: var(--van-white) !important;
+}
+
+/* ========== 表体样式 ========== */
+.vant-tbody {
+  position: relative;
+  background: var(--van-white);
+  display: table-row-group;
+}
+
+/* 当存在加载更多UI时，移除最后一行的底边框，避免与加载更多的边框重复 */
+.vant-table-wrapper.has-load-more .vant-tbody .vant-tr:last-child .vant-td,
+.vant-table-wrapper.has-load-more .vant-tbody .vant-tr:last-child .vant-td--fixed {
+  border-bottom: none;
+}
+
+.vant-tr {
+  display: table-row;
+  box-sizing: border-box;
+  transition: background-color 0.15s ease;
+  height: auto;
+  min-height: 44px;
+}
+
+/* ========== 行状态样式 - 统一处理所有区域 ========== */
+
+/* Hover效果 - 仅在支持hover的设备上生效（PC端），移动端不显示hover效果 */
+@media (hover: hover) and (pointer: fine) {
+  /* Hover效果 - 主表格 */
+  .vant-table-wrapper .vant-table-body .vant-tbody .vant-tr:hover > .vant-td,
+  .vant-table-wrapper .vant-table-body .vant-tbody .vant-tr--hover > .vant-td {
+    background-color: var(--van-hover-color) !important;
+    transition: background-color 0.15s ease !important;
+  }
+
+  /* Hover效果 - 左侧固定列 */
+  .vant-table-wrapper
+    .vant-table-fixed--left
+    .vant-table-fixed__body
+    .vant-tbody
+    .vant-tr:hover
+    > .vant-td--fixed,
+  .vant-table-wrapper
+    .vant-table-fixed--left
+    .vant-table-fixed__body
+    .vant-tbody
+    .vant-tr--hover
+    > .vant-td--fixed {
+    background-color: var(--van-hover-color) !important;
+    transition: background-color 0.15s ease !important;
+  }
+
+  /* Hover效果 - 右侧固定列 */
+  .vant-table-wrapper
+    .vant-table-fixed--right
+    .vant-table-fixed__body
+    .vant-tbody
+    .vant-tr:hover
+    > .vant-td--fixed,
+  .vant-table-wrapper
+    .vant-table-fixed--right
+    .vant-table-fixed__body
+    .vant-tbody
+    .vant-tr--hover
+    > .vant-td--fixed {
+    background-color: var(--van-hover-color) !important;
+    transition: background-color 0.15s ease !important;
+  }
+}
+
+/* 鼠标按下时的即时反馈 - 根据选择模式使用正确的颜色 */
+/* 复选框模式时使用 selected-row-color，单选模式时使用 highlight-color */
+.vant-table-wrapper .vant-table-body .vant-tbody .vant-tr:active > .vant-td {
+  background-color: var(--vant-selected-row-color, #e6f4ff) !important;
+  transition: none !important; /* 取消过渡，立即反馈 */
+}
+
+.vant-table-wrapper .vant-table-fixed--left .vant-table-fixed__body .vant-tbody .vant-tr:active > .vant-td--fixed {
+  background-color: var(--vant-selected-row-color, #e6f4ff) !important;
+  transition: none !important; /* 取消过渡，立即反馈 */
+}
+
+.vant-table-wrapper .vant-table-fixed--right .vant-table-fixed__body .vant-tbody .vant-tr:active > .vant-td--fixed {
+  background-color: var(--vant-selected-row-color, #e6f4ff) !important;
+  transition: none !important; /* 取消过渡，立即反馈 */
+}
+
+/* 增强的 :active 状态 - 使用更高的选择器权重确保生效 */
+.vant-table-wrapper.vant-table-wrapper .vant-table-body .vant-tbody .vant-tr:active > .vant-td,
+.vant-table-wrapper.vant-table-wrapper .vant-table-fixed--left .vant-table-fixed__body .vant-tbody .vant-tr:active > .vant-td--fixed,
+.vant-table-wrapper.vant-table-wrapper .vant-table-fixed--right .vant-table-fixed__body .vant-tbody .vant-tr:active > .vant-td--fixed {
+  background-color: var(--vant-selected-row-color, #e6f4ff) !important;
+  transition: none !important;
+  transform: translateZ(0); /* 强制硬件加速确保立即渲染 */
+}
+
+/* 额外的强制权重保证 - 处理任何可能的CSS覆盖问题 */
+.vant-table-wrapper[data-active-fix="true"] .vant-table-body .vant-tbody .vant-tr:active > .vant-td,
+.vant-table-wrapper[data-active-fix="true"] .vant-table-fixed--left .vant-table-fixed__body .vant-tbody .vant-tr:active > .vant-td--fixed,
+.vant-table-wrapper[data-active-fix="true"] .vant-table-fixed--right .vant-table-fixed__body .vant-tbody .vant-tr:active > .vant-td--fixed {
+  background-color: var(--vant-selected-row-color, #e6f4ff) !important;
+  transition: none !important;
+  will-change: background-color;
+}
+
+/* 固定列容器级别的CSS变量保证 */
+.vant-table-fixed--left[data-active-fix="true"] .vant-table-fixed__body .vant-tbody .vant-tr:active > .vant-td--fixed,
+.vant-table-fixed--right[data-active-fix="true"] .vant-table-fixed__body .vant-tbody .vant-tr:active > .vant-td--fixed {
+  background-color: var(--vant-selected-row-color, #e6f4ff) !important;
+  transition: none !important;
+  will-change: background-color;
+}
+
+/* 单选模式时的鼠标按下反馈 */
+.vant-table-wrapper[data-select-mode="radio"] .vant-table-body .vant-tbody .vant-tr:active > .vant-td,
+.vant-table-wrapper[data-select-mode="radio"] .vant-table-fixed--left .vant-table-fixed__body .vant-tbody .vant-tr:active > .vant-td--fixed,
+.vant-table-wrapper[data-select-mode="radio"] .vant-table-fixed--right .vant-table-fixed__body .vant-tbody .vant-tr:active > .vant-td--fixed {
+  background-color: var(--vant-highlight-color, #e6f4ff) !important;
+  transition: none !important; /* 取消过渡，立即反馈 */
+}
+
+/* 复选框选中行样式 - 统一颜色，确保所有区域一致 */
+.vant-table-wrapper .vant-table-body .vant-tbody .vant-tr--checkbox-selected > .vant-td,
+.vant-table-wrapper .vant-table-fixed--left .vant-table-fixed__body .vant-tbody .vant-tr--checkbox-selected > .vant-td--fixed,
+.vant-table-wrapper .vant-table-fixed--right .vant-table-fixed__body .vant-tbody .vant-tr--checkbox-selected > .vant-td--fixed {
+  background-color: var(--vant-selected-row-color, #e6f4ff) !important;
+  transition: background-color 0.15s ease !important;
+}
+
+/* 核心样式：确保点击高亮始终生效且唯一 - 最高优先级 */
+.vant-table-wrapper .vant-tr--selected > .vant-td,
+.vant-table-wrapper .vant-tr--selected > .vant-td--fixed {
+  background-color: var(--vant-highlight-color, #e6f4ff) !important;
+  transition: none !important;
+  z-index: 999 !important;
+}
+
+/* 确保选中状态在所有区域都是最高优先级 */
+.vant-table-wrapper .vant-table-body .vant-tbody .vant-tr--selected > .vant-td,
+.vant-table-wrapper .vant-table-fixed--left .vant-table-fixed__body .vant-tbody .vant-tr--selected > .vant-td--fixed,
+.vant-table-wrapper .vant-table-fixed--right .vant-table-fixed__body .vant-tbody .vant-tr--selected > .vant-td--fixed {
+  background-color: var(--vant-highlight-color, #e6f4ff) !important;
+  transition: none !important;
+  z-index: 999 !important;
+  position: relative !important;
+}
+
+/* 双重保证：如果行同时有点击和复选框状态，点击优先 */
+.vant-table-wrapper .vant-table-body .vant-tbody .vant-tr--selected.vant-tr--checkbox-selected > .vant-td,
+.vant-table-wrapper .vant-table-fixed--left .vant-table-fixed__body .vant-tbody .vant-tr--selected.vant-tr--checkbox-selected > .vant-td--fixed,
+.vant-table-wrapper .vant-table-fixed--right .vant-table-fixed__body .vant-tbody .vant-tr--selected.vant-tr--checkbox-selected > .vant-td--fixed {
+  background-color: var(--vant-highlight-color, #e6f4ff) !important;
+  transition: background-color 0.05s ease !important;
+  z-index: 999 !important; /* 最高优先级 */
+  position: relative !important;
+}
+
+/* 高亮行样式 - 主表格 */
+.vant-table-wrapper .vant-table-body .vant-tbody .vant-tr--highlighted > .vant-td {
+  background-color: #fff7e6 !important;
+  border-color: var(--van-warning-color) !important;
+  transition: background-color 0.15s ease, border-color 0.15s ease !important;
+}
+
+/* 高亮行样式 - 左侧固定列 */
+.vant-table-wrapper
+  .vant-table-fixed--left
+  .vant-table-fixed__body
+  .vant-tbody
+  .vant-tr--highlighted
+  > .vant-td--fixed {
+  background-color: #fff7e6 !important;
+  border-color: var(--van-warning-color) !important;
+  transition: background-color 0.15s ease, border-color 0.15s ease !important;
+}
+
+/* 高亮行样式 - 右侧固定列 */
+.vant-table-wrapper
+  .vant-table-fixed--right
+  .vant-table-fixed__body
+  .vant-tbody
+  .vant-tr--highlighted
+  > .vant-td--fixed {
+  background-color: #fff7e6 !important;
+  border-color: var(--van-warning-color) !important;
+  transition: background-color 0.15s ease, border-color 0.15s ease !important;
+}
+
+/* 条纹行样式 */
+.vant-tr--striped .vant-td,
+.vant-tr--striped .vant-td--fixed {
+  background-color: #fafbfc;
+}
+
+/* 总计行样式 */
+.vant-tr--total .vant-td,
+.vant-tr--total .vant-td--fixed {
+  font-weight: 600;
+  background-color: #f5f5f5;
+}

@@ -1,0 +1,492 @@
+/* ========== 单元格样式 ========== */
+.vant-td {
+  background-color: var(--van-white);
+  color: var(--van-text-color);
+  border: none;
+  border-bottom: 1px solid var(--van-border-color);
+  border-right: 1px solid var(--van-border-color);
+  font-size: 12px;
+  transition: background-color 0.15s ease;
+  line-height: 1.5;
+  position: relative;
+  display: table-cell;
+  overflow: hidden;
+  vertical-align: middle;
+  height: auto;
+  min-height: 44px;
+  padding: 8px 12px;
+  box-sizing: border-box;
+  white-space: normal;
+  word-wrap: break-word;
+  word-break: break-all;
+}
+
+/* 最后一列不需要右边框 */
+.vant-td:last-child {
+  border-right: none;
+}
+
+.vant-td--fixed {
+  background-color: var(--van-white);
+  color: var(--van-text-color);
+  border: none;
+  border-bottom: 1px solid var(--van-border-color);
+  font-size: 12px;
+  transition: background-color 0.15s ease;
+  line-height: 1.5;
+  position: relative;
+  display: table-cell;
+  overflow: hidden;
+  vertical-align: middle;
+  height: auto;
+  min-height: 44px;
+  padding: 8px 12px;
+  box-sizing: border-box;
+  white-space: normal;
+  word-wrap: break-word;
+  word-break: break-all;
+}
+
+/* 固定列的最后一列也不需要右边框 */
+.vant-td--fixed:last-child {
+  border-right: none;
+}
+
+/* ========== 过滤模态对话框样式 ========== */
+.vant-filter-modal-popup {
+  /* 居中模态对话框的特定样式 */
+  .van-popup__content {
+    max-width: 90vw;
+    max-height: 80vh;
+    width: 500px;
+    margin: 0 auto;
+  }
+}
+
+/* Teleport到body的弹窗样式 - 确保不受任何容器限制 */
+.vant-filter-modal-popup--teleport {
+  position: fixed !important;
+  // top: 0 !important;
+  top: 50% !important;
+  left: 0 !important;
+  width: 100vw !important;
+  // height: 100vh !important;
+  z-index: 99999 !important;
+  pointer-events: auto !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  .van-popup__content {
+    max-width: 90vw;
+    max-height: 80vh;
+    width: 500px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 100000 !important;
+  }
+}
+
+.vant-filter-modal {
+  background: var(--van-white);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  max-width: 500px;
+  width: 100%;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.vant-filter-modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--van-border-color);
+  background: var(--van-white);
+  flex-shrink: 0;
+}
+
+.vant-filter-modal__title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--van-text-color);
+}
+
+.vant-filter-modal__close {
+  font-size: 18px;
+  color: var(--van-text-color-3);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.vant-filter-modal__close:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+.vant-filter-modal__content {
+  padding: 20px;
+  flex: 1;
+  overflow-y: auto;
+  max-height: calc(80vh - 120px); /* 留出头部和底部空间 */
+}
+
+/* VTable风格过滤搜索框 */
+.vant-filter-search {
+  margin-bottom: 16px;
+}
+
+/* VTable风格过滤选项列表 */
+.vant-filter-v-options {
+  border: 1px solid #f0f0f0;
+  border-radius: 8px;
+  max-height: 300px;
+  overflow-y: auto;
+  background: #fafafa;
+}
+
+.vant-filter-v-option {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  border-bottom: 1px solid #f5f5f5;
+  background: white;
+  transition: background-color 0.15s ease;
+}
+
+.vant-filter-v-option:last-child {
+  border-bottom: none;
+}
+
+.vant-filter-v-option:hover {
+  background-color: #e6f4ff;
+}
+
+.vant-filter-v-option__text {
+  margin-left: 8px;
+  flex: 1;
+  color: #333;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+/* 过滤选项滚动条样式 */
+.vant-filter-v-options::-webkit-scrollbar {
+  width: 6px;
+}
+
+.vant-filter-v-options::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.vant-filter-v-options::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+.vant-filter-v-options::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+.vant-filter-modal__actions {
+  display: flex;
+  gap: 12px;
+  padding: 16px 20px;
+  border-top: 1px solid var(--van-border-color);
+  background: var(--van-background);
+  flex-shrink: 0;
+}
+
+.vant-filter-modal__actions .van-button {
+  height: 40px;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 6px;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .vant-filter-modal-popup .van-popup__content {
+    width: 95vw;
+    max-width: 95vw;
+  }
+  
+  .vant-filter-modal {
+    max-width: 95vw;
+  }
+  
+  .vant-filter-modal__header {
+    padding: 12px 16px;
+  }
+  
+  .vant-filter-modal__title {
+    font-size: 14px;
+  }
+  
+  .vant-filter-modal__content {
+    padding: 16px;
+  }
+  
+  .vant-filter-v-option {
+    padding: 10px 12px;
+  }
+  
+  .vant-filter-modal__actions {
+    padding: 12px 16px;
+  }
+  
+  .vant-filter-modal__actions .van-button {
+    height: 36px;
+    font-size: 13px;
+  }
+}
+
+.vant-filter-panel__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--van-border-color);
+}
+
+.vant-filter-panel__title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--van-text-color);
+}
+
+.vant-filter-panel__close {
+  font-size: 18px;
+  color: var(--van-text-color-3);
+  cursor: pointer;
+}
+
+.vant-filter-panel__content {
+  padding: 20px;
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.vant-filter-type {
+  margin-bottom: 20px;
+}
+
+.vant-filter-type__title {
+  font-size: 14px;
+  color: var(--van-text-color);
+  margin-bottom: 12px;
+  font-weight: 500;
+}
+
+.vant-filter-input {
+  margin-bottom: 20px;
+}
+
+.vant-filter-options {
+  margin-bottom: 20px;
+}
+
+.vant-filter-options__title {
+  font-size: 14px;
+  color: var(--van-text-color);
+  margin-bottom: 12px;
+  font-weight: 500;
+}
+
+.vant-filter-options__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.vant-filter-options__list .van-tag {
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.vant-filter-panel__actions {
+  display: flex;
+  gap: 12px;
+  padding: 16px 20px;
+  border-top: 1px solid var(--van-border-color);
+  background: var(--van-background);
+}
+
+.vant-td--empty {
+  padding: 0;
+  border-bottom: none;
+  text-align: center;
+}
+
+.vant-td--expanded {
+  border-bottom: 0;
+  padding: 0;
+  background-color: var(--van-background);
+  box-sizing: border-box;
+  vertical-align: top;
+}
+
+/* ========== 选择列单元格样式 ========== */
+.vant-td--selection {
+  text-align: center !important;
+  padding: 8px 4px !important;
+  width: 48px !important;
+  min-width: 48px !important;
+  max-width: 48px !important;
+  vertical-align: middle !important;
+  background-color: var(--van-white) !important;
+}
+
+/* 固定列中的选择列单元格 */
+.vant-td--selection.vant-td--fixed {
+  text-align: center !important;
+  padding: 8px 4px !important;
+  width: 48px !important;
+  min-width: 48px !important;
+  max-width: 48px !important;
+  vertical-align: middle !important;
+  background-color: var(--van-white) !important;
+}
+
+.vant-td--selection .vant-td__content {
+  justify-content: center !important;
+  align-items: center !important;
+  min-height: 44px !important; /* 确保与表体行高一致 */
+  display: flex !important;
+  height: 100% !important;
+  padding: 0 !important; /* 移除额外的padding确保垂直居中 */
+}
+
+/* ========== 展开列单元格样式 ========== */
+.vant-td--expand {
+  text-align: center !important;
+  padding: 8px 4px !important;
+  width: 40px !important;
+  min-width: 40px !important;
+  max-width: 40px !important;
+  cursor: pointer;
+  background-color: var(--van-white) !important;
+}
+
+/* 固定列中的展开列单元格 */
+.vant-td--expand.vant-td--fixed {
+  text-align: center !important;
+  padding: 8px 4px !important;
+  width: 40px !important;
+  min-width: 40px !important;
+  max-width: 40px !important;
+  cursor: pointer;
+  background-color: var(--van-white) !important;
+}
+
+/* 固定列的最后一列单元格不需要右边框 */
+.vant-td--fixed:last-child {
+  border-right: none;
+}
+
+/* 固定列的最后一列表头不需要右边框 */
+.vant-th--fixed:last-child {
+  border-right: none;
+}
+
+.vant-td__content {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  padding: 2px 0;
+  overflow: hidden;
+  flex-wrap: wrap;
+  word-wrap: break-word;
+  min-height: 100%;
+}
+
+/* 确保复选框在所有区域都垂直居中 */
+.vant-table-checkbox,
+.vant-table-radio {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin: 0 auto !important;
+}
+
+.vant-td__text,
+.vant-td__link {
+  flex: 1;
+  line-height: 1.5;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  line-clamp: 5;
+  -webkit-box-orient: vertical;
+  word-break: break-all;
+  white-space: normal;
+  align-self: center;
+}
+
+.vant-td--link {
+  cursor: pointer;
+}
+
+.vant-td__link {
+  color: var(--van-primary-color);
+  text-decoration: none;
+  flex: 1;
+  line-height: 1.5;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  line-clamp: 5;
+  -webkit-box-orient: vertical;
+  word-break: break-all;
+  white-space: normal;
+}
+
+/* 链接hover效果 - 仅在PC端生效 */
+@media (hover: hover) and (pointer: fine) {
+  .vant-td__link:hover {
+    text-decoration: underline;
+  }
+}
+
+/deep/ .vant-td__expand-icon {
+  width: 20px;
+  height: 20px;
+  transition: transform 0.3s ease;
+  color: var(--van-text-color-3);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+}
+
+/deep/ .vant-td__expand-icon--expanded {
+  transform: rotate(90deg);
+}
+
+.vant-td__expand-content {
+  padding: 16px;
+  background: transparent;
+  min-height: 60px;
+  box-sizing: border-box;
+  border: 1px solid var(--van-border-color);
+  border-top: none;
+}
+
+.vant-td__data-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  background-color: rgba(2, 120, 255, 0.1);
+  z-index: 0;
+  pointer-events: none;
+}

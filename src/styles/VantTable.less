@@ -1,0 +1,1414 @@
+/* ========== CSS变量定义 ========== */
+.vant-table-wrapper {
+  --van-primary-color: #0278ff;
+  --van-text-color: #333;
+  --van-text-color-2: #666;
+  --van-text-color-3: #c1c1c1;
+  --van-border-color: #ebebeb; /* 🔑 修复：使用更浅的边框色 */
+  --van-background: #fafafa; /* 🔑 修复：使用接近白色的表头背景色 */
+  --van-white: #fff;
+  --van-success-color: #52c41a;
+  --van-warning-color: #fa8c16;
+  --van-danger-color: #ff4757;
+  --van-hover-color: #e6f4ff;
+  --van-selected-color: #e6f4ff;
+  --van-selected-border-color: #1677ff;
+}
+
+/* ========== 表格行状态样式 - 统一处理所有区域 ========== */
+
+/* 🔑 基础行状态 - PC端Hover效果 */
+@media (hover: hover) and (pointer: fine) {
+  /* 主表格Hover效果 */
+  .vant-table-wrapper .vant-table-body .vant-tbody .vant-tr:hover > .vant-td,
+  .vant-table-wrapper .vant-table-body .vant-tbody .vant-tr--hover > .vant-td {
+    background-color: var(--van-hover-color) !important;
+    transition: background-color 0.15s ease !important;
+  }
+
+  /* 左侧固定列Hover效果 */
+  .vant-table-wrapper .vant-table-fixed--left .vant-table-fixed__body .vant-tbody .vant-tr:hover > .vant-td--fixed,
+  .vant-table-wrapper .vant-table-fixed--left .vant-table-fixed__body .vant-tbody .vant-tr--hover > .vant-td--fixed {
+    background-color: var(--van-hover-color) !important;
+    transition: background-color 0.15s ease !important;
+  }
+
+  /* 右侧固定列Hover效果 */
+  .vant-table-wrapper .vant-table-fixed--right .vant-table-fixed__body .vant-tbody .vant-tr:hover > .vant-td--fixed,
+  .vant-table-wrapper .vant-table-fixed--right .vant-table-fixed__body .vant-tbody .vant-tr--hover > .vant-td--fixed {
+    background-color: var(--van-hover-color) !important;
+    transition: background-color 0.15s ease !important;
+  }
+}
+
+/* 🔑 鼠标按下时的即时反馈 - 根据选择模式使用正确的颜色 */
+.vant-table-wrapper .vant-table-body .vant-tbody .vant-tr:active > .vant-td {
+  background-color: var(--vant-selected-row-color, #e6f4ff) !important;
+  border-color: var(--vant-selected-row-border-color, #1677ff) !important;
+  transition: background-color 0.15s ease, border-color 0.15s ease !important;
+}
+
+.vant-table-wrapper .vant-table-fixed--left .vant-table-fixed__body .vant-tbody .vant-tr:active > .vant-td--fixed {
+  background-color: var(--vant-selected-row-color, #e6f4ff) !important;
+  border-color: var(--vant-selected-row-border-color, #1677ff) !important;
+  transition: background-color 0.15s ease, border-color 0.15s ease !important;
+}
+
+.vant-table-wrapper .vant-table-fixed--right .vant-table-fixed__body .vant-tbody .vant-tr:active > .vant-td--fixed {
+  background-color: var(--vant-selected-row-color, #e6f4ff) !important;
+  border-color: var(--vant-selected-row-border-color, #1677ff) !important;
+  transition: background-color 0.15s ease, border-color 0.15s ease !important;
+}
+
+/* 🔑 选中行样式 - 主表格 */
+.vant-table-wrapper .vant-table-body .vant-tbody .vant-tr--selected > .vant-td {
+  background-color: var(--vant-selected-row-color, #e6f4ff) !important;
+  border-color: var(--vant-selected-row-border-color, #1677ff) !important;
+  transition: background-color 0.15s ease, border-color 0.15s ease !important;
+}
+
+/* 选中行样式 - 左侧固定列 */
+.vant-table-wrapper .vant-table-fixed--left .vant-table-fixed__body .vant-tbody .vant-tr--selected > .vant-td--fixed {
+  background-color: var(--vant-selected-row-color, #e6f4ff) !important;
+  border-color: var(--vant-selected-row-border-color, #1677ff) !important;
+  transition: background-color 0.15s ease, border-color 0.15s ease !important;  
+}
+
+/* 选中行样式 - 右侧固定列 */
+.vant-table-wrapper .vant-table-fixed--right .vant-table-fixed__body .vant-tbody .vant-tr--selected > .vant-td--fixed {
+  background-color: var(--vant-selected-row-color, #e6f4ff) !important;
+  border-color: var(--vant-selected-row-border-color, #1677ff) !important;
+  transition: background-color 0.15s ease, border-color 0.15s ease !important;
+}
+
+/* 🔑 高亮行样式 - 主表格 */
+.vant-table-wrapper .vant-table-body .vant-tbody .vant-tr--highlighted > .vant-td {
+  background-color: var(--vant-highlight-color, #fff2e8) !important;
+  border-color: var(--vant-highlight-border-color, #fa8c16) !important;
+  transition: background-color 0.15s ease, border-color 0.15s ease !important;
+}
+
+/* 高亮行样式 - 左侧固定列 */
+.vant-table-wrapper .vant-table-fixed--left .vant-table-fixed__body .vant-tbody .vant-tr--highlighted > .vant-td--fixed {
+  background-color: var(--vant-highlight-color, #fff2e8) !important;
+  border-color: var(--vant-highlight-border-color, #fa8c16) !important;
+  transition: background-color 0.15s ease, border-color 0.15s ease !important;
+}
+
+/* 高亮行样式 - 右侧固定列 */
+.vant-table-wrapper .vant-table-fixed--right .vant-table-fixed__body .vant-tbody .vant-tr--highlighted > .vant-td--fixed {
+  background-color: var(--vant-highlight-color, #fff2e8) !important;
+  border-color: var(--vant-highlight-border-color, #fa8c16) !important;
+  transition: background-color 0.15s ease, border-color 0.15s ease !important;
+}
+
+/* 🔑 条纹行样式 */
+.vant-tr--striped .vant-td,
+.vant-tr--striped .vant-td--fixed {
+  background-color: #fafbfc !important;
+}
+
+/* 🔑 扩展行样式 */
+@media (hover: hover) and (pointer: fine) {
+  .vant-table-wrapper .vant-table-body .vant-tbody .vant-tr--expanded:hover > .vant-td--expanded,
+  .vant-table-wrapper .vant-table-body .vant-tbody .vant-tr--expanded.vant-tr--hover > .vant-td--expanded {
+    background-color: var(--van-hover-color) !important;
+    transition: background-color 0.15s ease !important;
+  }
+
+  .vant-table-wrapper .vant-table-fixed--left .vant-table-fixed__body .vant-tbody .vant-tr--expanded:hover > .vant-td--expanded.vant-td--fixed,
+  .vant-table-wrapper .vant-table-fixed--left .vant-table-fixed__body .vant-tbody .vant-tr--expanded.vant-tr--hover > .vant-td--expanded.vant-td--fixed {
+    background-color: var(--van-hover-color) !important;
+    transition: background-color 0.15s ease !important;
+  }
+
+  .vant-table-wrapper .vant-table-fixed--right .vant-table-fixed__body .vant-tbody .vant-tr--expanded:hover > .vant-td--expanded.vant-td--fixed,
+  .vant-table-wrapper .vant-table-fixed--right .vant-table-fixed__body .vant-tbody .vant-tr--expanded.vant-tr--hover > .vant-td--expanded.vant-td--fixed {
+    background-color: var(--van-hover-color) !important;
+    transition: background-color 0.15s ease !important;
+  }
+
+  .vant-table-wrapper .vant-tr--expanded:hover .vant-td__expand-content,
+  .vant-table-wrapper .vant-tr--expanded.vant-tr--hover .vant-td__expand-content {
+    background-color: transparent !important;
+  }
+}
+
+/* 确保Vant弹窗组件有足够高的z-index */
+.van-popup {
+  z-index: 99999 !important;
+}
+
+/* 确保弹窗遮罩层也有正确的z-index */
+.van-overlay {
+  z-index: 99998 !important;
+}
+
+/* ========== vtable风格的复选框样式 ========== */
+.vant-table-checkbox {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  user-select: none;
+  vertical-align: middle;
+}
+
+.vant-table-checkbox__input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  margin: 0;
+  padding: 0;
+  pointer-events: none;
+}
+
+.vant-table-checkbox__icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border: 1px solid #d9d9d9;
+  border-radius: 2px;
+  background-color: #fff;
+  transition: all 0.2s ease;
+  font-size: 12px;
+  line-height: 1;
+}
+
+/* 复选框hover效果 - 仅在PC端生效 */
+@media (hover: hover) and (pointer: fine) {
+  .vant-table-checkbox__icon:hover {
+    border-color: var(--van-primary-color);
+  }
+}
+
+.vant-table-checkbox--checked .vant-table-checkbox__icon {
+  background-color: var(--van-primary-color);
+  border-color: var(--van-primary-color);
+  color: #fff;
+}
+
+.vant-table-checkbox--indeterminate .vant-table-checkbox__icon {
+  background-color: var(--van-primary-color);
+  border-color: var(--van-primary-color);
+  color: #fff;
+}
+
+.vant-table-checkbox--disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.vant-table-checkbox--disabled .vant-table-checkbox__icon {
+  background-color: #f5f5f5;
+  border-color: #d9d9d9;
+  cursor: not-allowed;
+}
+
+.vant-table-checkbox__check-icon {
+  font-size: 10px;
+  font-weight: bold;
+  line-height: 1;
+}
+
+.vant-table-checkbox__indeterminate-icon {
+  font-size: 10px;
+  font-weight: bold;
+  line-height: 1;
+}
+
+/* ========== vtable风格的单选框样式 ========== */
+.vant-table-radio {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  user-select: none;
+  vertical-align: middle;
+}
+
+.vant-table-radio__input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  margin: 0;
+  padding: 0;
+  pointer-events: none;
+}
+
+.vant-table-radio__icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border: 1px solid #d9d9d9;
+  border-radius: 50%;
+  background-color: #fff;
+  transition: all 0.2s ease;
+}
+
+/* 单选框hover效果 - 仅在PC端生效 */
+@media (hover: hover) and (pointer: fine) {
+  .vant-table-radio__icon:hover {
+    border-color: var(--van-primary-color);
+  }
+}
+
+.vant-table-radio--checked .vant-table-radio__icon {
+  border-color: var(--van-primary-color);
+}
+
+.vant-table-radio--disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.vant-table-radio--disabled .vant-table-radio__icon {
+  background-color: #f5f5f5;
+  border-color: #d9d9d9;
+  cursor: not-allowed;
+}
+
+.vant-table-radio__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--van-primary-color);
+  transition: all 0.2s ease;
+}
+
+/* ========== 表格容器基础样式 ========== */
+.vant-table-wrapper {
+  position: relative;
+  border: 1px solid var(--van-border-color);
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--van-white);
+  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+  /* VXETable风格：为外部滚动条预留空间 */
+  padding-bottom: 15px; /* 确保为滚动条留出空间 */
+}
+
+/* 当没有横向滚动条时，移除底部填充 */
+.vant-table-wrapper:not(.has-horizontal-scrollbar) {
+  padding-bottom: 0;
+}
+
+/* 当同时有滚动条和加载更多UI时，调整加载更多的底部边距 */
+.vant-table-wrapper.has-horizontal-scrollbar.has-load-more {
+  padding-bottom: 0; /* 移除wrapper的padding，由load-more组件自己处理间距 */
+}
+.vant-table-wrapper.has-horizontal-scrollbar .vant-table-load-more {
+  margin-bottom: 15px; /* 为滚动条留出空间 */
+}
+/* 固定列的加载更多占位也需要相同的滚动条边距 */
+.vant-table-wrapper.has-horizontal-scrollbar .vant-table-load-more--fixed-left,
+.vant-table-wrapper.has-horizontal-scrollbar .vant-table-load-more--fixed-right {
+  margin-bottom: 15px; /* 为滚动条留出空间 */
+}
+
+/* ========== Table主体布局容器 ========== */
+.vant-table-layout-wrapper {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* 🔑 CSS伪元素阴影方案（参考VantTable copy 15.vue） */
+.vant-table-layout-wrapper::before,
+.vant-table-layout-wrapper::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 8px;
+  z-index: 100;
+  pointer-events: none;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+  transition: opacity 0.3s ease;
+  opacity: 0;
+}
+
+/* 左侧阴影 */
+.vant-table-layout-wrapper::before {
+  left: var(--left-shadow-position, 0px);
+}
+
+/* 右侧阴影 */
+.vant-table-layout-wrapper::after {
+  right: var(--right-shadow-position, 0px);
+}
+
+/* 显示阴影的条件 */
+.vant-table-layout-wrapper[data-scroll-left="1"]::before {
+  opacity: 1;
+}
+
+.vant-table-layout-wrapper[data-scroll-right="1"]::after {
+  opacity: 1;
+}
+
+.vant-table-loading {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.8);
+  z-index: 100;
+}
+
+/* ========== 表头区域 - 优化对齐 ========== */
+.vant-table-header {
+  position: relative;
+  z-index: 30;
+  flex-shrink: 0;
+  overflow: hidden; /* 🔑 关键修复：与重构前版本保持一致 */
+  background: var(--van-background);
+  /* 移除border-bottom，避免与固定列错位 */
+  /* 🔑 关键修复：完全移除高度限制，让内容自由扩展 */
+}
+
+.vant-table-header__content {
+  overflow-x: hidden; /* 🔑 关键：完全隐藏水平滚动条，与重构前版本一致 */
+  overflow-y: hidden;
+  /* 移除这里的border，由thead统一处理 */
+}
+
+/* ========== 表头样式 - vxe-table风格 ========== */
+.vant-thead {
+  position: relative;
+  background: var(--van-background);
+  display: table-header-group;
+  /* 确保表头在所有区域都有一致的下边框 */
+  border-bottom: 1px solid var(--van-border-color);
+}
+
+.vant-thead-row {
+  position: relative;
+  background: var(--van-background);
+  height: auto;
+  min-height: 48px;
+}
+
+/* 🔑 表头样式 - 参考重构前版本 */
+.vant-th {
+  background-color: #fafafa !important; /* 更接近白色的浅灰色 */
+  border-bottom: 1px solid #ebebeb; /* 更浅的边框色 */
+  font-weight: 500; /* 适中的字重 */
+  font-family: -apple-system,BlinkMacSystemFont,Segoe UI,PingFang SC,Hiragino Sans GB,Microsoft YaHei,Helvetica Neue,Helvetica,Arial,sans-serif;
+  text-align: left;
+  padding: 12px; /* 统一padding */
+  font-size: 14px;
+  color: #666; /* 更柔和的文字颜色 */
+  line-height: 1.5;
+  vertical-align: middle;
+  position: relative;
+}
+
+.vant-th--fixed {
+  background-color: #fafafa !important;
+  color: #666 !important;
+  font-weight: 500 !important;
+  border-color: #ebebeb !important;
+}
+
+.vant-th__content {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.vant-th__text {
+  flex: 1;
+  font-size: 14px;
+  font-weight: 500;
+  color: #666;
+}
+
+
+/* 🔑 彻底统一表头背景色 - 使用接近重构前版本的颜色 */
+.vant-table-wrapper .vant-table-header,
+.vant-table-wrapper .vant-table-header__content,
+.vant-table-wrapper .vant-table-header .vant-table,
+.vant-table-wrapper .vant-thead,
+.vant-table-wrapper .vant-thead-row,
+.vant-table-wrapper .vant-th,
+.vant-table-wrapper .vant-th--fixed,
+.vant-table-wrapper .vant-table-fixed__header,
+.vant-table-wrapper .vant-table-fixed__header .vant-table,
+.vant-table-wrapper .vant-table-fixed__header .vant-thead,
+.vant-table-wrapper .vant-table-fixed__header .vant-thead-row,
+.vant-table-wrapper .vant-table-fixed__header .vant-th,
+.vant-table-wrapper .vant-table-fixed--left .vant-table-fixed__header,
+.vant-table-wrapper .vant-table-fixed--left .vant-th,
+.vant-table-wrapper .vant-table-fixed--right .vant-table-fixed__header,
+.vant-table-wrapper .vant-table-fixed--right .vant-th {
+  background: #fafafa !important; /* 更接近白色的浅灰色 */
+  background-color: #fafafa !important;
+  color: #666 !important; /* 更柔和的文字颜色 */
+  font-weight: 500 !important; /* 适中的字重 */
+  border-color: #ebebeb !important; /* 更浅的边框色 */
+}
+
+/* 🔑 强制覆盖可能存在的其他样式规则 */
+[class*="vant-table"] [class*="vant-th"],
+[class*="vant-table"] [class*="vant-thead"] {
+  background: #fafafa !important; /* 更接近白色的浅灰色 */
+  background-color: #fafafa !important;
+  color: #666 !important;
+  font-weight: 500 !important;
+}
+
+/* 🔑 覆盖scoped CSS中使用CSS变量的规则 */
+.vant-table-fixed--left .vant-table-fixed__header .vant-th--fixed,
+.vant-table-fixed--right .vant-table-fixed__header .vant-th--fixed,
+.vant-table-fixed .vant-thead .vant-th--fixed,
+.vant-table-fixed--left .vant-th,
+.vant-table-fixed--right .vant-th,
+.vant-table-fixed .vant-th {
+  background: #fafafa !important; /* 更接近白色的浅灰色 */
+  background-color: #fafafa !important;
+  color: #666 !important;
+  font-weight: 500 !important;
+}
+
+/* ========== 表体区域 ========== */
+.vant-table-body {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  overflow-x: scroll; /* 🔑 保持滚动功能，参考vxe-table */
+  overflow-y: scroll; /* 🔑 关键：需要垂直滚动功能 */
+  /* 修复：移除padding-bottom避免错位，改用margin或其他方式处理最后一行显示 */
+  padding-bottom: 0;
+  
+  /* 🔑 参考vxe-table的滚动条隐藏方案 */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+  -webkit-overflow-scrolling: touch;
+  
+  &::-webkit-scrollbar {
+    display: none; /* Chrome/Safari/Opera */
+  }
+}
+
+/* 🔑 终极修复：使用最高优先级彻底隐藏水平滚动条 */
+.vant-table-wrapper * {
+  &::-webkit-scrollbar:horizontal {
+    display: none !important;
+    height: 0 !important;
+    width: 0 !important;
+  }
+  
+  &::-webkit-scrollbar-track:horizontal {
+    display: none !important;
+  }
+  
+  &::-webkit-scrollbar-thumb:horizontal {
+    display: none !important;
+  }
+  
+  &::-webkit-scrollbar-corner {
+    display: none !important;
+  }
+}
+
+/* 🔑 关键修复：彻底隐藏水平滚动条，保留垂直滚动条 */
+.vant-table-body::-webkit-scrollbar:horizontal {
+  display: none !important;
+  height: 0 !important;
+}
+
+/* 确保在所有浏览器中都隐藏水平滚动条 */
+.vant-table-body {
+  scrollbar-width: none !important; /* Firefox */
+  -ms-overflow-style: none !important; /* IE and Edge */
+  scrollbar-color: transparent transparent !important; /* Firefox */
+}
+
+/* 更强的选择器确保水平滚动条被隐藏 */
+.vant-table-wrapper .vant-table-body::-webkit-scrollbar:horizontal,
+.vant-table-layout-wrapper .vant-table-body::-webkit-scrollbar:horizontal {
+  display: none !important;
+  height: 0 !important;
+  width: 0 !important;
+}
+
+/* 只对水平滚动条进行隐藏，保留垂直滚动条 */
+.vant-table-body::-webkit-scrollbar {
+  width: 8px; /* 保留垂直滚动条 */
+  height: 0 !important; /* 隐藏水平滚动条 */
+}
+
+/* 专门针对webkit浏览器的水平滚动条隐藏 */
+.vant-table-body {
+  -webkit-overflow-scrolling: touch;
+}
+
+.vant-table-body::-webkit-scrollbar-track:horizontal {
+  display: none !important;
+}
+
+.vant-table-body::-webkit-scrollbar-thumb:horizontal {
+  display: none !important;
+}
+
+/* 针对表格内部元素的滚动条隐藏 */
+.vant-table-wrapper .vant-table-header,
+.vant-table-wrapper .vant-table-body,
+.vant-table-wrapper .vant-table-header__content,
+.vant-table-wrapper .vant-table {
+  &::-webkit-scrollbar:horizontal {
+    display: none !important;
+    height: 0 !important;
+  }
+}
+
+/* ========== 表格基础样式 ========== */
+.vant-table {
+  width: 100%;
+  border-spacing: 0;
+  border-collapse: separate;
+  position: relative;
+  table-layout: fixed;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+}
+
+/* 🔑 关键修复：专门针对表头table的滚动条隐藏 */
+.vant-table--header {
+  overflow: hidden !important;
+}
+
+/* ========== 固定列样式 ========== */
+.vant-table-fixed {
+  position: absolute;
+  top: 0;
+  bottom: 0; /* 确保固定列容器填满整个高度 */
+  overflow: hidden;
+  pointer-events: auto;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  background: var(--van-white);
+  /* 确保固定列与主表格的基线完全对齐 */
+  align-items: stretch;
+  /* 防止亚像素偏移 */
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  transition: 0.3s box-shadow; /* 🔑 参考vxe-table，添加阴影过渡 */
+  
+  /* 🔑 参考vxe-table的阴影实现 */
+  &--left.scrolling--middle {
+    box-shadow: 8px 0px 10px -5px rgba(0, 0, 0, 0.12);
+  }
+  
+  &--right.scrolling--middle {
+    box-shadow: -8px 0px 10px -5px rgba(0, 0, 0, 0.12);
+  }
+}
+
+.vant-table-fixed__header {
+  position: relative;
+  z-index: 60;
+  overflow: visible; /* 🔑 关键改动：允许固定列表头内容溢出 */
+  flex-shrink: 0;
+  background: var(--van-background) !important;
+  /* 移除border-bottom，由thead统一处理 */
+  pointer-events: auto;
+  /* 确保高度与主表格表头同步 */
+  box-sizing: border-box;
+  /* 🔑 关键修复：允许JavaScript设置高度，不使用!important */
+  height: auto;
+  min-height: 48px;
+  /* 确保与主表格表头完全对齐 */
+  align-items: stretch;
+}
+
+/* 强制固定列表头背景色 - 最高优先级 */
+.vant-table-fixed__header,
+.vant-table-fixed__header .vant-table,
+.vant-table-fixed__header .vant-thead,
+.vant-table-fixed__header .vant-thead-row,
+.vant-table-fixed__header .vant-th,
+.vant-table-fixed__header .vant-th--fixed {
+  background: var(--van-background) !important;
+  background-color: var(--van-background) !important;
+  /* 🔑 关键：确保所有固定列表头元素都有统一的高度规则 */
+  height: auto !important;
+  min-height: 48px !important;
+  max-height: none !important;
+  line-height: 1.4 !important;
+}
+
+.vant-table-fixed__body {
+  position: relative;
+  z-index: 55;
+  overflow-x: hidden; /* 🔑 关键修复：只隐藏水平滚动，允许垂直滚动 */
+  overflow-y: auto; /* 🔑 关键修复：允许垂直滚动以实现同步 */
+  flex: 1;
+  background: var(--van-white);
+  pointer-events: auto;
+  touch-action: pan-y;
+  /* 支持手机触摸拖动 */
+  -webkit-overflow-scrolling: touch;
+  /* 确保在iOS设备上触摸响应 */
+  -webkit-user-select: none;
+  user-select: none;
+  /* 确保与主表格完全对齐，移除任何可能的额外间距 */
+  margin-bottom: 0;
+  padding-bottom: 0;
+  /* 确保固定列表体与加载更多组件紧密连接 */
+  border-bottom: none;
+  
+  /* 🔑 关键修复：高度由JavaScript控制，确保与主表格同步 */
+  
+  /* 🔑 隐藏固定列的垂直滚动条以保持美观 */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+  
+  &::-webkit-scrollbar {
+    display: none; /* Chrome/Safari/Opera */
+  }
+}
+
+.vant-table-fixed--left {
+  left: 0;
+  border-right: 1px solid var(--van-border-color);
+}
+
+.vant-table-fixed--right {
+  right: 0;
+  border-left: 1px solid var(--van-border-color); /* 🔑 修复：恢复右侧固定列的左边框 */
+}
+
+// ========== 横向滚动条样式（VXETable风格 - 外部实体滚动条） ==========
+.vant-table-scroll-x-virtual {
+  /* VXETable风格：位于表格外部的实体滚动条，完全不遮挡内容 */
+  background: #f5f5f5;
+  border-top: 1px solid var(--van-border-color);
+  user-select: none;
+  position: absolute;
+  z-index: 90;
+  width: 100%;
+  height: 15px;
+  overflow: hidden;
+  pointer-events: auto;
+  box-shadow: 0 -1px 3px rgba(0,0,0,0.1);
+  display: flex; /* 使用flex布局来分配左中右三个区域 */
+  flex-direction: row;
+}
+
+/* 滚动条左侧角落区域（对应左侧固定列） */
+.vant-table-scrollbar-left {
+  flex-shrink: 0;
+  background: #f5f5f5;
+  border-right: 1px solid var(--van-border-color);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+}
+
+.vant-table-scrollbar-left:hover {
+  background: #e8e8e8;
+}
+
+/* 滚动条中间区域（对应主表格） */
+.vant-table-scrollbar-middle {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+
+/* 滚动条右侧角落区域（对应右侧固定列） */
+.vant-table-scrollbar-right {
+  flex-shrink: 0;
+  background: #f5f5f5;
+  border-left: 1px solid var(--van-border-color);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+}
+
+.vant-table-scrollbar-right:hover {
+  background: #e8e8e8;
+}
+
+.vant-table-scroll-x-wrapper {
+  position: relative;
+  overflow: hidden;
+  background: #f9f9f9;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  height: 100%;
+  width: 100%;
+  border: none; /* 移除内部边框 */
+  box-sizing: border-box;
+}
+
+.vant-table-scroll-x-wrapper:hover {
+  background: #f0f0f0;
+}
+
+.vant-table-scroll-x-handle {
+  position: absolute;
+  top: 2px;
+  left: 0;
+  cursor: grab;
+  user-select: none;
+  transition: opacity 0.3s ease; /* 🔑 移除left过渡以避免表头宽度闪现 */
+  height: calc(100% - 4px);
+  border-radius: 3px;
+  opacity: 0.8;
+}
+
+.vant-table-scroll-x-handle--visible {
+  opacity: 1;
+}
+
+.vant-table-scroll-x-handle:hover {
+  opacity: 1;
+}
+
+.vant-table-scroll-x-handle--dragging {
+  cursor: grabbing;
+  opacity: 1;
+  transition: opacity 0.3s ease; /* 拖拽时不使用 left 过渡 */
+}
+
+.vant-table-scroll-x-space {
+  width: 100%;
+  height: 100%;
+  background: #e8e8e8;
+  border: 1px solid #d0d0d0;
+  border-radius: 3px;
+  position: relative;
+  box-sizing: border-box;
+  transition: background-color 0.2s ease;
+}
+
+.vant-table-scroll-x-handle:hover .vant-table-scroll-x-space {
+  background: #dcdcdc;
+  border-color: #c0c0c0;
+}
+
+.vant-table-scroll-x-handle:active .vant-table-scroll-x-space,
+.vant-table-scroll-x-handle--dragging .vant-table-scroll-x-space {
+  background: #d0d0d0;
+  border-color: #b0b0b0;
+}
+
+/* ========== 表头样式 ========== */
+.vant-thead {
+  position: relative;
+  background: var(--van-background) !important;
+  display: table-header-group;
+  /* 确保表头在所有区域都有一致的下边框 */
+  border-bottom: 1px solid var(--van-border-color);
+}
+
+.vant-thead-row {
+  position: relative;
+  background: var(--van-background) !important;
+  display: table-row;
+  box-sizing: border-box;
+  height: auto !important; /* 强制自适应高度 */
+  min-height: 48px !important; /* 统一最小高度 */
+  max-height: none !important; /* 移除最大高度限制 */
+  .vant-th--sortable{
+    .vant-th__content{
+      justify-content: flex-start;
+      .vant-th__text{
+        flex: inherit;
+      }
+      &:hover{
+        background: none !important;
+      }
+    }
+  }
+}
+
+.vant-th {
+  background-color: var(--van-background) !important;
+  color: var(--van-text-color-2);
+  font-weight: 500;
+  font-size: 12px;
+  user-select: none;
+  position: relative;
+  border: none;
+  border-bottom: 1px solid var(--van-border-color); /* 🔑 修复：恢复表头底边框 */
+  border-right: 1px solid var(--van-border-color); /* 🔑 修复：恢复表头右边框 */
+  text-align: left;
+  display: table-cell;
+  vertical-align: middle;
+  overflow: visible !important; /* 🔑 关键：允许内容溢出显示 */
+  height: auto !important; /* 🔑 关键：强制自适应高度 */
+  min-height: 48px !important; /* 统一最小高度 */
+  max-height: none !important; /* 移除最大高度限制 */
+  padding: 8px 12px;
+  box-sizing: border-box;
+  white-space: normal !important; /* 🔑 关键：允许换行 */
+  word-wrap: break-word;
+  word-break: break-all;
+  line-height: 1.4 !important; /* 统一行高 */
+}
+
+/* 最后一列表头不需要右边框 */
+.vant-th:last-child {
+  border-right: none;
+}
+
+.vant-th--fixed {
+  background-color: var(--van-background) !important;
+  color: var(--van-text-color-2);
+  font-weight: 500;
+  font-size: 12px;
+  position: relative;
+  border: none;
+  border-bottom: 1px solid var(--van-border-color); /* 🔑 修复：恢复固定列表头底边框 */
+  /* 固定列表头不需要右边框，因为固定列容器有边框 */
+  border-right: none;
+  text-align: left;
+  display: table-cell;
+  vertical-align: middle;
+  overflow: visible !important; /* 🔑 关键：允许内容溢出显示 */
+  height: auto !important; /* 🔑 关键：强制自适应高度 */
+  min-height: 48px !important; /* 统一最小高度 */
+  max-height: none !important; /* 移除最大高度限制 */
+  padding: 8px 12px;
+  box-sizing: border-box;
+  white-space: normal !important; /* 🔑 关键：允许换行 */
+  word-wrap: break-word;
+  word-break: break-all;
+  line-height: 1.4 !important; /* 统一行高 */
+}
+
+/* 额外的高优先级固定列表头背景色规则 */
+/deep/ .vant-table-fixed--left .vant-table-fixed__header .vant-th--fixed,
+/deep/ .vant-table-fixed--right .vant-table-fixed__header .vant-th--fixed,
+/deep/ .vant-table-fixed .vant-thead .vant-th--fixed {
+  background: var(--van-background) !important;
+  background-color: var(--van-background) !important;
+}
+
+/* 终极修复：确保所有固定列表头都有正确的背景色 */
+/deep/ .vant-table-wrapper .vant-table-fixed .vant-table-fixed__header th {
+  background: var(--van-background) !important;
+  background-color: var(--van-background) !important;
+}
+
+/deep/ .vant-table-wrapper .vant-table-fixed .vant-thead th {
+  background: var(--van-background) !important;
+  background-color: var(--van-background) !important;
+}
+
+/* 超高权重修复：针对具体类组合 */
+/deep/ .vant-table-wrapper .vant-table-fixed__header .vant-thead .vant-th.vant-th--fixed {
+  background: var(--van-background) !important;
+  background-color: var(--van-background) !important;
+}
+
+/deep/ .vant-table-wrapper .vant-table-fixed__header .vant-thead .vant-th.vant-th--selection.vant-th--fixed {
+  background: var(--van-background) !important;
+  background-color: var(--van-background) !important;
+}
+
+/* 确保表头容器也有正确背景 */
+/deep/ .vant-table-wrapper .vant-table-fixed .vant-table-fixed__header {
+  background: var(--van-background) !important;
+  background-color: var(--van-background) !important;
+}
+
+/deep/ .vant-table-wrapper .vant-table-fixed .vant-table-fixed__header .vant-thead {
+  background: var(--van-background) !important;
+  background-color: var(--van-background) !important;
+}
+
+/* 终极强制修复：使用具体颜色值确保固定列表头背景正确 */
+/deep/ .vant-table-wrapper .vant-table-fixed__header,
+/deep/ .vant-table-wrapper .vant-table-fixed__header .vant-table,
+/deep/ .vant-table-wrapper .vant-table-fixed__header .vant-thead,
+/deep/ .vant-table-wrapper .vant-table-fixed__header .vant-thead .vant-tr,
+/deep/ .vant-table-wrapper .vant-table-fixed__header .vant-thead .vant-th {
+  background: #f5f5f5 !important;
+  background-color: #f5f5f5 !important;
+}
+
+/* 特别针对固定列表头的选择列和普通列 */
+/deep/ .vant-table-wrapper .vant-table-fixed__header .vant-th.vant-th--fixed,
+/deep/ .vant-table-wrapper .vant-table-fixed__header .vant-th.vant-th--selection,
+/deep/ .vant-table-wrapper .vant-table-fixed__header .vant-th.vant-th--expand {
+  background: #f5f5f5 !important;
+  background-color: #f5f5f5 !important;
+}
+
+/* 额外的深度选择器修复 - 针对可能的嵌套结构 */
+/deep/ .vant-table-fixed--left .vant-table-fixed__header,
+/deep/ .vant-table-fixed--right .vant-table-fixed__header,
+/deep/ .vant-table-fixed--left .vant-thead,
+/deep/ .vant-table-fixed--right .vant-thead,
+/deep/ .vant-table-fixed--left .vant-thead-row,
+/deep/ .vant-table-fixed--right .vant-thead-row {
+  background: #f5f5f5 !important;
+  background-color: #f5f5f5 !important;
+}
+
+/* 直接针对固定列的th元素 */
+/deep/ .vant-table-fixed--left .vant-th,
+/deep/ .vant-table-fixed--right .vant-th,
+/deep/ .vant-table-fixed--left .vant-th--fixed,
+/deep/ .vant-table-fixed--right .vant-th--fixed,
+/deep/ .vant-table-fixed--left .vant-th--selection,
+/deep/ .vant-table-fixed--right .vant-th--selection {
+  background: #f5f5f5 !important;
+  background-color: #f5f5f5 !important;
+  /* 固定列表头只有底边框，没有右边框 */
+  border-right: none !important;
+  /* 确保固定列表头高度自适应 */
+  height: auto !important;
+  min-height: 48px !important;
+  max-height: none !important; /* 🔑 关键：移除最大高度限制 */
+  white-space: normal !important; /* 允许换行 */
+  word-wrap: break-word !important;
+  word-break: break-all !important;
+  line-height: 1.4 !important; /* 🔑 关键：统一行高 */
+  padding: 8px 12px !important; /* 🔑 关键：统一内边距 */
+  vertical-align: middle !important; /* 🔑 关键：垂直对齐 */
+  overflow: visible !important; /* 🔑 关键：允许内容溢出 */
+}
+
+/* 确保所有表头行高度自适应 */
+/deep/ .vant-table-wrapper .vant-thead-row,
+/deep/ .vant-table-wrapper .vant-thead-row--main,
+/deep/ .vant-table-wrapper .vant-thead-row--left,
+/deep/ .vant-table-wrapper .vant-thead-row--right {
+  height: auto !important;
+  min-height: 48px !important;
+  max-height: none !important; /* 🔑 关键：移除最大高度限制 */
+}
+
+/* 特别为右侧固定列表头行添加高度同步规则 */
+/deep/ .vant-table-fixed--right .vant-thead-row,
+/deep/ .vant-table-fixed--right .vant-thead-row--right {
+  height: auto !important;
+  min-height: 48px !important;
+  max-height: none !important;
+  line-height: 1.4 !important;
+}
+
+/* 确保所有数据行高度保持固定，但排除表头行 */
+/deep/ .vant-table-wrapper .vant-tbody .vant-tr {
+  height: 44px !important;
+  min-height: 44px !important;
+}
+
+/* 确保所有表头行高度自适应 - 更高优先级 */
+/deep/ .vant-table-wrapper .vant-thead .vant-thead-row,
+/deep/ .vant-table-wrapper .vant-thead-row {
+  height: auto !important;
+  min-height: 48px !important;
+  max-height: none !important; /* 移除最大高度限制 */
+}
+
+/* 确保所有表头单元格高度自适应 - 更高优先级 */
+/deep/ .vant-table-wrapper .vant-thead .vant-th,
+/deep/ .vant-table-wrapper .vant-th {
+  height: auto !important;
+  min-height: 48px !important;
+  max-height: none !important; /* 移除最大高度限制 */
+  white-space: normal !important; /* 允许换行 */
+  word-wrap: break-word !important;
+  word-break: break-all !important;
+  padding: 8px 12px !important;
+  vertical-align: middle !important;
+  line-height: 1.4 !important; /* 确保合适的行高 */
+  overflow: visible !important; /* 🔑 关键：允许内容溢出显示 */
+}
+
+/* 确保固定列表头也支持自适应高度 - 更高优先级 */
+/deep/ .vant-table-wrapper .vant-table-fixed__header .vant-thead .vant-th,
+/deep/ .vant-table-wrapper .vant-table-fixed__header .vant-th,
+/deep/ .vant-table-wrapper .vant-table-fixed .vant-th {
+  height: auto !important;
+  min-height: 48px !important;
+  max-height: none !important; /* 移除最大高度限制 */
+  white-space: normal !important;
+  word-wrap: break-word !important;
+  word-break: break-all !important;
+  padding: 8px 12px !important;
+  vertical-align: middle !important;
+  line-height: 1.4 !important;
+  overflow: visible !important; /* 🔑 关键：允许内容溢出显示 */
+}
+
+/* 特别为右侧固定列表头添加超高优先级规则 */
+/deep/ .vant-table-wrapper .vant-table-fixed--right .vant-table-fixed__header .vant-th,
+/deep/ .vant-table-wrapper .vant-table-fixed--right .vant-thead .vant-th,
+/deep/ .vant-table-wrapper .vant-table-fixed--right .vant-th {
+  height: auto !important;
+  min-height: 48px !important;
+  max-height: none !important;
+  line-height: 1.4 !important;
+  padding: 8px 12px !important;
+  vertical-align: middle !important;
+  white-space: normal !important;
+  word-wrap: break-word !important;
+  word-break: break-all !important;
+  overflow: visible !important;
+}
+
+/* 为右侧固定列表头内容添加同步规则 */
+/deep/ .vant-table-wrapper .vant-table-fixed--right .vant-th__content,
+/deep/ .vant-table-wrapper .vant-table-fixed--right .vant-th__text {
+  /* 🔑 关键修复：确保内容容器自适应高度 */
+  height: auto !important;
+  max-height: none !important;
+  line-height: 1.4 !important;
+  white-space: normal !important;
+  word-wrap: break-word !important;
+  word-break: break-all !important;
+  overflow: visible !important;
+}
+
+/* 🔑 终极修复：右侧固定列表头高度同步的最高优先级规则 */
+.vant-table-wrapper .vant-table-fixed--right,
+.vant-table-wrapper .vant-table-fixed--right .vant-table-fixed__header,
+.vant-table-wrapper .vant-table-fixed--right .vant-table-fixed__header .vant-table,
+.vant-table-wrapper .vant-table-fixed--right .vant-table-fixed__header .vant-thead,
+.vant-table-wrapper .vant-table-fixed--right .vant-table-fixed__header .vant-thead-row {
+  /* 🔑 关键：不设置固定高度，让JavaScript控制 */
+  height: auto;
+  min-height: 48px;
+  max-height: none;
+  line-height: 1.4 !important;
+  vertical-align: middle !important;
+  white-space: normal !important;
+  box-sizing: border-box !important;
+}
+
+.vant-table-wrapper .vant-table-fixed--right .vant-table-fixed__header .vant-th {
+  /* 表头单元格需要合理的padding和自适应高度 */
+  height: auto;
+  min-height: 48px;
+  max-height: none;
+  line-height: 1.4 !important;
+  padding: 8px 12px !important;
+  vertical-align: middle !important;
+  white-space: normal !important;
+  box-sizing: border-box !important;
+}
+
+/* 右侧固定列表头的内容容器 */
+.vant-table-wrapper .vant-table-fixed--right .vant-th__content {
+  /* 🔑 关键修复：移除固定高度，允许内容自适应 */
+  height: auto !important;
+  min-height: 32px !important; /* 48px - 16px padding */
+  line-height: 1.4 !important;
+  align-items: center !important;
+  /* 确保内容可以自由扩展 */
+  max-height: none !important;
+}
+
+/* 右侧固定列表头的文本 */
+.vant-table-wrapper .vant-table-fixed--right .vant-th__text {
+  line-height: 1.4 !important;
+  white-space: normal !important;
+  word-wrap: break-word !important;
+  word-break: break-all !important;
+}
+
+/* 🎯 精确修复：确保JavaScript同步高度能够正常工作 */
+.vant-table-wrapper .vant-table-fixed--right .vant-table-fixed__header .vant-thead-row {
+  /* 移除可能阻止JS同步的样式 */
+  height: auto !important;
+  min-height: 48px !important;
+  /* 确保display正确 */
+  display: table-row !important;
+}
+
+.vant-table-wrapper .vant-table-fixed--right .vant-table-fixed__header .vant-th {
+  /* 确保单元格能被JS正确设置高度 */
+  height: auto !important;
+  min-height: 48px !important;
+  /* 保持正确的显示方式和对齐 */
+  display: table-cell !important;
+  vertical-align: middle !important;
+  box-sizing: border-box !important;
+}
+
+/* 确保JavaScript样式设置不被覆盖 */
+.vant-table-wrapper .vant-table-fixed--right .vant-table-fixed__header .vant-thead-row[style*="height"] {
+  /* 当JS设置了内联样式时，优先使用JS设置的高度 */
+  height: inherit !important;
+}
+
+.vant-table-wrapper .vant-table-fixed--right .vant-table-fixed__header .vant-th[style*="height"] {
+  /* 当JS设置了内联样式时，优先使用JS设置的高度 */
+  height: inherit !important;
+}
+
+/* 🔥 简化CSS规则：移除冲突，让JavaScript同步机制主导高度控制 */
+.vant-table-wrapper .vant-table-fixed--right .vant-table-fixed__header,
+.vant-table-wrapper .vant-table-fixed--left .vant-table-fixed__header,
+.vant-table-wrapper .vant-table-header {
+  /* 🔑 关键修复：移除!important，允许JavaScript设置高度 */
+  height: auto;
+  min-height: 48px;
+  /* 移除最大高度限制，允许内容自由扩展 */
+  max-height: none;
+}
+
+.vant-table-wrapper .vant-table-fixed--right .vant-table-fixed__header .vant-thead,
+.vant-table-wrapper .vant-table-fixed--left .vant-table-fixed__header .vant-thead,
+.vant-table-wrapper .vant-table-header .vant-thead {
+  height: auto;
+  min-height: 48px;
+  max-height: none;
+}
+
+.vant-table-wrapper .vant-table-fixed--right .vant-table-fixed__header .vant-thead-row,
+.vant-table-wrapper .vant-table-fixed--left .vant-table-fixed__header .vant-thead-row,
+.vant-table-wrapper .vant-table-header .vant-thead-row {
+  height: auto;
+  min-height: 48px;
+  max-height: none;
+  display: table-row !important;
+}
+
+.vant-table-wrapper .vant-table-fixed--right .vant-table-fixed__header .vant-th,
+.vant-table-wrapper .vant-table-fixed--left .vant-table-fixed__header .vant-th,
+.vant-table-wrapper .vant-table-header .vant-th {
+  height: auto;
+  min-height: 48px;
+  max-height: none;
+  line-height: 1.4 !important;
+  /* 🔑 关键修复：恢复合理的padding，确保文案有内边距和自适应高度 */
+  padding: 8px 12px !important;
+  display: table-cell !important;
+  vertical-align: middle !important;
+  box-sizing: border-box !important;
+  white-space: normal !important;
+  word-wrap: break-word !important;
+  overflow: visible !important;
+}
+
+/* 🎯 专门修复右侧固定列的定位和宽度问题 */
+.vant-table-wrapper .vant-table-fixed--right {
+  /* 🔑 修复：调整定位，消除与主表头之间的留白，但保持边框显示 */
+  right: 0 !important; /* 恢复为0，让边框正常显示 */
+  margin-right: 0 !important;
+  padding-right: 0 !important;
+  /* 确保没有额外的边框或间距 */
+  border-right: none !important;
+  /* 🔑 修复：确保box-shadow等样式不被覆盖，移除不必要的!important */
+}
+
+.vant-table-wrapper .vant-table-fixed--right .vant-table-fixed__header {
+  /* 确保表头容器宽度完全匹配 */
+  width: 100% !important;
+  overflow: hidden !important;
+}
+
+.vant-table-wrapper .vant-table-fixed--right .vant-table-fixed__header .vant-table {
+  /* 确保表格宽度完全匹配容器 */
+  width: 100% !important;
+  margin: 0 !important;
+  border-spacing: 0 !important;
+  border-collapse: separate !important;
+}
+
+.vant-table-wrapper .vant-table-fixed--right .vant-table-fixed__header .vant-th:last-child {
+  /* 最后一列不需要右边框，避免双重边框 */
+  border-right: none !important;
+}
+
+/* 确保所有数据单元格高度保持固定 */
+/deep/ .vant-table-wrapper .vant-td {
+  height: 44px !important;
+  min-height: 44px !important;
+}
+
+/* 🔑 修复：移除覆盖固定列边框的规则，让固定列保持正确的边框 */
+
+/* ========== 表格行和单元格基础样式 ========== */
+.vant-tr {
+  display: table-row;
+  background-color: var(--van-white);
+  border: none;
+  height: 44px; /* 固定行高度 */
+  min-height: 44px;
+  box-sizing: border-box;
+  transition: background-color 0.15s ease;
+}
+
+.vant-tr:hover {
+  background-color: #f8f8f8;
+}
+
+.vant-tr--highlighted {
+  background-color: var(--van-hover-color);
+}
+
+.vant-tr--striped {
+  background-color: #fafafa;
+}
+
+.vant-tr--selected {
+  background-color: var(--van-selected-color);
+}
+
+.vant-tr--total {
+  background-color: #f5f5f5;
+  font-weight: 500;
+}
+
+.vant-td {
+  background-color: var(--van-white);
+  color: var(--van-text-color);
+  border: none;
+  border-bottom: 1px solid var(--van-border-color); /* 🔑 修复：恢复单元格底边框 */
+  border-right: 1px solid var(--van-border-color); /* 🔑 修复：恢复单元格右边框 */
+  font-size: 12px;
+  text-align: left;
+  display: table-cell;
+  vertical-align: middle;
+  overflow: hidden;
+  height: 44px; /* 固定单元格高度 */
+  min-height: 44px;
+  padding: 8px 12px;
+  box-sizing: border-box;
+  white-space: normal;
+  word-wrap: break-word;
+  word-break: break-all;
+  line-height: 1.4;
+  transition: background-color 0.15s ease;
+}
+
+/* 最后一列不需要右边框 */
+.vant-td:last-child {
+  border-right: none;
+}
+
+.vant-td--fixed {
+  background-color: var(--van-white);
+  color: var(--van-text-color);
+  border: none;
+  border-bottom: 1px solid var(--van-border-color); /* 🔑 修复：恢复固定列单元格底边框 */
+  /* 固定列单元格不需要右边框，因为固定列容器有边框 */
+  border-right: none;
+  font-size: 12px;
+  text-align: left;
+  display: table-cell;
+  vertical-align: middle;
+  overflow: hidden;
+  height: 44px; /* 固定单元格高度 */
+  min-height: 44px;
+  padding: 8px 12px;
+  box-sizing: border-box;
+  white-space: normal;
+  word-wrap: break-word;
+  word-break: break-all;
+  line-height: 1.4;
+  transition: background-color 0.15s ease;
+}
+
+.vant-td--highlighted {
+  background-color: var(--van-hover-color);
+}
+
+.vant-td--selected {
+  background-color: var(--van-selected-color);
+}
+
+.vant-td--link {
+  color: var(--van-primary-color);
+  cursor: pointer;
+}
+
+.vant-td--link:hover {
+  text-decoration: underline;
+}
+
+.vant-td--empty {
+  padding: 20px;
+  text-align: center;
+  color: var(--van-text-color-3);
+  border-bottom: none;
+}
+
+.vant-td__content {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  min-height: inherit;
+}
+
+.vant-td__text {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ========== 表头内容样式 ========== */
+.vant-th__content {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  /* 🔑 关键修复：使用auto高度，不固定为100% */
+  height: auto;
+  min-height: inherit;
+  /* 确保可以自由扩展 */
+  max-height: none;
+  padding: 0;
+  box-sizing: border-box;
+  /* 确保与父元素高度完全一致，但允许自适应 */
+  line-height: 1.4;
+}
+
+.vant-th__text {
+  flex: 1;
+  overflow: visible !important; /* 🔑 关键：允许内容溢出显示 */
+  /* 表头文案允许换行 */
+  white-space: normal !important;
+  word-wrap: break-word;
+  word-break: break-all;
+  line-height: 1.4 !important; /* 统一行高 */
+}
+
+.vant-th__sort-icon {
+  margin-left: 4px;
+  flex-shrink: 0;
+}
+

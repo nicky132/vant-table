@@ -1,0 +1,462 @@
+/* ========== 展开面板样式 ========== */
+.vant-expand-panel__header h4 {
+  margin: 0 0 12px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--van-text-color);
+}
+
+.vant-expand-panel__content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+.vant-expand-panel__content--fixed {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 120px;
+  overflow-y: auto;
+}
+
+.vant-field {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 12px;
+}
+
+.vant-field__label {
+  color: var(--van-text-color-2);
+  font-weight: 500;
+  min-width: 60px;
+  flex-shrink: 0;
+}
+
+.vant-field__value {
+  color: var(--van-text-color);
+  word-break: break-word;
+  flex: 1;
+}
+
+/* ========== 空数据样式 ========== */
+.vant-empty-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  background: var(--van-white);
+  color: var(--van-text-color-3);
+  font-size: 14px;
+}
+
+/* ========== 选择操作工具栏样式 ========== */
+.vant-table-selection-toolbar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: var(--van-white);
+  border-top: 1px solid var(--van-border-color);
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  box-sizing: border-box;
+}
+
+.vant-table-selection-toolbar__content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 16px;
+}
+
+.vant-table-selection-toolbar__info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+
+.vant-table-selection-toolbar__count {
+  font-size: 14px;
+  color: var(--van-text-color);
+  font-weight: 500;
+}
+
+.vant-table-selection-toolbar__total {
+  color: var(--van-text-color-2);
+  font-weight: normal;
+}
+
+.vant-table-selection-toolbar__clear {
+  font-size: 12px;
+}
+
+.vant-table-selection-toolbar__actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+/* ========== 加载更多样式 ========== */
+.vant-table-load-more {
+  padding: 16px;
+  text-align: center;
+  border-top: 1px solid #f0f0f0; /* 统一使用上边框 */
+  background: var(--van-white);
+  flex-shrink: 0;
+  height: 60px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  position: relative;
+  /* 亚像素渲染优化 */
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  will-change: auto;
+  /* 确保垂直对齐基线一致 */
+  line-height: 1;
+  /* 强制像素对齐 */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  z-index: 998;
+}
+
+/* 固定列的加载更多样式 - 通过内联样式动态定位对齐 */
+.vant-table-load-more--fixed-left,
+.vant-table-load-more--fixed-right {
+  padding: 16px;
+  text-align: center;
+  border-top: 1px solid #f0f0f0; /* 统一使用上边框 */
+  background: var(--van-white);
+  flex-shrink: 0; /* 不允许压缩，保持固定高度 */
+  height: 60px; /* 保持60px高度与主表格一致 */
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 !important; /* 强制清除所有margin */
+  position: relative; /* 使用相对定位进行微调 */
+  /* transform 由内联样式动态设置 */
+  will-change: auto;
+  /* 确保垂直对齐基线一致 */
+  line-height: 1;
+  /* 强制像素对齐 */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  z-index: 998; /* 添加z-index与主表格保持一致 */
+}
+
+/* 确保所有加载更多区域的子元素样式完全一致 */
+.vant-table-load-more .vant-table-load-more__loading,
+.vant-table-load-more .vant-table-load-more__error,
+.vant-table-load-more .vant-table-load-more__finished,
+.vant-table-load-more .vant-table-load-more__ready,
+.vant-table-load-more--fixed-left .vant-table-load-more__loading,
+.vant-table-load-more--fixed-left .vant-table-load-more__error,
+.vant-table-load-more--fixed-left .vant-table-load-more__finished,
+.vant-table-load-more--fixed-left .vant-table-load-more__ready,
+.vant-table-load-more--fixed-right .vant-table-load-more__loading,
+.vant-table-load-more--fixed-right .vant-table-load-more__error,
+.vant-table-load-more--fixed-right .vant-table-load-more__finished,
+.vant-table-load-more--fixed-right .vant-table-load-more__ready {
+  margin: 0;
+  padding: 0;
+  line-height: 1;
+  box-sizing: border-box;
+  font-size: 12px;
+  color: var(--van-text-color-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.vant-table-load-more__loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: var(--van-text-color-2);
+  font-size: 12px;
+}
+
+.vant-table-load-more__error {
+  color: var(--van-primary-color);
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.vant-table-load-more__finished {
+  color: var(--van-text-color-3);
+  font-size: 12px;
+}
+
+.vant-table-load-more__ready {
+  color: var(--van-text-color-2);
+  font-size: 12px;
+}
+
+/* ========== 隐藏原生Vant组件的label ========== */
+.vant-table-wrapper .van-checkbox__label,
+.vant-table-wrapper .van-radio__label {
+  display: none;
+}
+
+.vant-table-wrapper .van-checkbox,
+.vant-table-wrapper .van-radio {
+  margin: 0;
+}
+
+.vant-table-wrapper .van-checkbox__icon,
+.vant-table-wrapper .van-radio__icon {
+  font-size: 16px;
+}
+
+/* ========== 响应式设计 ========== */
+@media (max-width: 768px) {
+  .vant-th,
+  .vant-td {
+    font-size: 11px;
+    padding: 6px 8px;
+  }
+
+  .vant-th__text {
+    font-size: 11px;
+  }
+
+  .vant-table-selection-toolbar {
+    height: 50px;
+    padding: 0 12px;
+  }
+
+  .vant-table-selection-toolbar__count {
+    font-size: 12px;
+  }
+
+  .vant-table-checkbox,
+  .vant-table-radio {
+    width: 14px;
+    height: 14px;
+  }
+
+  .vant-table-checkbox__icon,
+  .vant-table-radio__icon {
+    width: 14px;
+    height: 14px;
+  }
+
+  .vant-table-radio__dot {
+    width: 6px;
+    height: 6px;
+  }
+
+  /* 移动端触摸反馈 - 增强触摸体验 */
+  .vant-table-wrapper .vant-table-body .vant-tbody .vant-tr:active > .vant-td,
+  .vant-table-wrapper .vant-table-fixed--left .vant-table-fixed__body .vant-tbody .vant-tr:active > .vant-td--fixed,
+  .vant-table-wrapper .vant-table-fixed--right .vant-table-fixed__body .vant-tbody .vant-tr:active > .vant-td--fixed {
+    background-color: var(--vant-selected-row-color, #e6f4ff) !important;
+    transition: none !important; /* 取消过渡，立即反馈 */
+    -webkit-tap-highlight-color: transparent; /* 去除 iOS 默认点击高亮 */
+  }
+
+  /* 增强的移动端触摸反馈 - 使用更高权重确保生效 */
+  .vant-table-wrapper.vant-table-wrapper .vant-table-body .vant-tbody .vant-tr:active > .vant-td,
+  .vant-table-wrapper.vant-table-wrapper .vant-table-fixed--left .vant-table-fixed__body .vant-tbody .vant-tr:active > .vant-td--fixed,
+  .vant-table-wrapper.vant-table-wrapper .vant-table-fixed--right .vant-table-fixed__body .vant-tbody .vant-tr:active > .vant-td--fixed {
+    background-color: var(--vant-selected-row-color, #e6f4ff) !important;
+    transition: none !important;
+    -webkit-tap-highlight-color: transparent;
+    transform: translateZ(0); /* 强制硬件加速 */
+  }
+
+  /* 移动端固定列容器级别的CSS变量保证 */
+  .vant-table-fixed--left[data-active-fix="true"] .vant-table-fixed__body .vant-tbody .vant-tr:active > .vant-td--fixed,
+  .vant-table-fixed--right[data-active-fix="true"] .vant-table-fixed__body .vant-tbody .vant-tr:active > .vant-td--fixed {
+    background-color: var(--vant-selected-row-color, #e6f4ff) !important;
+    transition: none !important;
+    -webkit-tap-highlight-color: transparent;
+    will-change: background-color;
+  }
+}
+
+@media (max-width: 480px) {
+  .vant-th,
+  .vant-td {
+    font-size: 10px;
+    padding: 4px 6px;
+  }
+
+  .vant-th__text {
+    font-size: 10px;
+  }
+
+  .vant-td__text,
+  .vant-td__link {
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+  }
+
+  .vant-table-selection-toolbar {
+    height: 44px;
+    padding: 0 8px;
+  }
+
+  .vant-table-selection-toolbar__content {
+    gap: 8px;
+  }
+
+  .vant-table-selection-toolbar__info {
+    gap: 8px;
+  }
+
+  .vant-table-selection-toolbar__count {
+    font-size: 11px;
+  }
+
+  .vant-table-checkbox,
+  .vant-table-radio {
+    width: 12px;
+    height: 12px;
+  }
+
+  .vant-table-checkbox__icon,
+  .vant-table-radio__icon {
+    width: 12px;
+    height: 12px;
+  }
+
+  .vant-table-checkbox__check-icon,
+  .vant-table-checkbox__indeterminate-icon {
+    font-size: 8px;
+  }
+
+  .vant-table-radio__dot {
+    width: 4px;
+    height: 4px;
+  }
+}
+
+/* ========== 性能优化 ========== */
+.vant-table-wrapper * {
+  box-sizing: border-box;
+}
+
+.vant-table-wrapper *::before,
+.vant-table-wrapper *::after {
+  box-sizing: border-box;
+}
+
+/* ========== 无障碍访问优化 ========== */
+.vant-table-checkbox:focus-within,
+.vant-table-radio:focus-within {
+  outline: none;
+  outline-offset: 2px;
+}
+
+.vant-th--sortable {
+  cursor: pointer;
+}
+
+.vant-th--sortable:focus {
+  outline: 2px solid var(--van-primary-color);
+  outline-offset: -2px;
+}
+
+/* ========== 打印样式 ========== */
+@media print {
+  .vant-table-wrapper {
+    border: 1px solid #000;
+    box-shadow: none;
+  }
+
+  .vant-table-selection-toolbar {
+    display: none;
+  }
+
+  .vant-table-scroll-x {
+    display: none;
+  }
+
+  .vant-th,
+  .vant-td {
+    border: 1px solid #000;
+  }
+}
+
+/* ========== 滚动条样式 ========== */
+.vant-table-body::-webkit-scrollbar,
+.vant-table-fixed__body::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.vant-table-body::-webkit-scrollbar-track,
+.vant-table-fixed__body::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.vant-table-body::-webkit-scrollbar-thumb,
+.vant-table-fixed__body::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+.vant-table-body::-webkit-scrollbar-thumb:hover,
+.vant-table-fixed__body::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* 彻底隐藏主表格的原生横向滚动条 - 所有浏览器兼容 */
+.vant-table-body::-webkit-scrollbar-horizontal {
+  display: none !important;
+  height: 0 !important;
+}
+
+.vant-table-body {
+  scrollbar-width: none !important; /* Firefox */
+  -ms-overflow-style: none !important; /* IE and Edge */
+}
+
+/* 确保只对水平滚动条隐藏，保留垂直滚动条 */
+.vant-table-body::-webkit-scrollbar:vertical {
+  width: 8px;
+}
+
+.vant-table-body::-webkit-scrollbar:horizontal {
+  display: none !important;
+  height: 0 !important;
+}
+
+/* ========== 动画和过渡效果 ========== */
+.vant-table-wrapper {
+  transition: opacity 0.3s ease;
+}
+
+.vant-table-wrapper.loading {
+  opacity: 0.7;
+}
+
+.vant-td__expand-content {
+  animation: expandAnimation 0.3s ease;
+}
+
+@keyframes expandAnimation {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

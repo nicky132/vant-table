@@ -1,0 +1,59 @@
+name: Deploy Documentation to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: |
+          # 添加重试机制处理npm registry 429错误
+          for i in 1 2 3; do
+            echo "Attempt $i to install dependencies..."
+            if npm install --legacy-peer-deps --no-audit --no-fund; then
+              echo "Dependencies installed successfully"
+              break
+            else
+              echo "Attempt $i failed"
+              if [ $i -eq 3 ]; then
+                echo "All attempts failed, exiting..."
+                exit 1
+              fi
+              echo "Retrying in 60 seconds..."
+              sleep 60
+            fi
+          done
+      
+      - name: Build documentation
+        run: npm run docs:build
+      
+      - name: Build demo
+        run: npm run build:demo
+      
+      - name: Copy demo to docs output
+        run: |
+          mkdir -p docs-src/.vitepress/dist/demo
+          cp -r docs/* docs-src/.vitepress/dist/demo/
+      
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs-src/.vitepress/dist
+          cname: false

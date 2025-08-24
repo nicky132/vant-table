@@ -1,0 +1,388 @@
+import { describe, it, expect, beforeEach, vi } from 'vitest'
+import { mount } from '@vue/test-utils'
+import { nextTick } from 'vue'
+import VantTable from '../src/VantTable.vue'
+
+// Mock data for testing
+const mockHeaders = [
+  { key: 'id', label: 'ID', width: 100, sortable: true },
+  { key: 'name', label: '姓名', width: 120, sortable: true },
+  { key: 'department', label: '部门', sortable: true },
+  { key: 'salary', label: '薪资', width: 120, sortable: true, type: 'currency' },
+  { key: 'status', label: '状态', width: 100, fixed: 'right' }
+]
+
+const mockData = [
+  { id: 1, name: '张三', department: '技术部', salary: 25000, status: '在职' },
+  { id: 2, name: '李四', department: '产品部', salary: 20000, status: '在职' },
+  { id: 3, name: '王五', department: '设计部', salary: 18000, status: '试用' },
+  { id: 4, name: '赵六', department: '技术部', salary: 30000, status: '离职' },
+  { id: 5, name: '钱七', department: '运营部', salary: 22000, status: '在职' }
+]
+
+describe('VantTable', () => {
+  let wrapper: any
+
+  beforeEach(() => {
+    wrapper = mount(VantTable, {
+      props: {
+        headers: mockHeaders,
+        data: mockData,
+        width: '100%',
+        height: 400
+      }
+    })
+  })
+
+  describe('基础功能', () => {
+    it('应该正确渲染表格', () => {
+      expect(wrapper.find('.vant-table-wrapper').exists()).toBe(true)
+      expect(wrapper.find('.vant-table-header').exists()).toBe(true)
+      expect(wrapper.find('.vant-table-body').exists()).toBe(true)
+    })
+
+    it('应该正确渲染表头', () => {
+      const headers = wrapper.findAll('.vant-th')
+      expect(headers.length).toBeGreaterThan(0)
+      
+      const firstHeader = headers[0]
+      expect(firstHeader.text()).toContain('ID')
+    })
+
+    it('应该正确渲染数据行', () => {
+      const rows = wrapper.findAll('.vant-tbody .vant-tr')
+      // 注意：可能包含扩展行，所以数量可能不等于数据长度
+      expect(rows.length).toBeGreaterThanOrEqual(mockData.length)
+    })
+
+    it('应该支持自定义宽高', () => {
+      const container = wrapper.find('.vant-table-wrapper')
+      expect(container.attributes('style')).toContain('width: 100%')
+      expect(container.attributes('style')).toContain('height: 400px')
+    })
+  })
+
+  describe('选择功能', () => {
+    beforeEach(async () => {
+      await wrapper.setProps({
+        selectable: true,
+        selectMode: 'checkbox',
+        rowKey: 'id'
+      })
+      await nextTick()
+    })
+
+    it('启用选择功能时应该显示选择列', () => {
+      const selectionHeaders = wrapper.findAll('.vant-th--selection')
+      expect(selectionHeaders.length).toBeGreaterThan(0)
+    })
+
+    it('应该支持单选模式', async () => {
+      await wrapper.setProps({
+        selectMode: 'radio'
+      })
+      await nextTick()
+
+      const radioElements = wrapper.findAll('.vant-table-radio')
+      expect(radioElements.length).toBeGreaterThan(0)
+    })
+
+    it('应该支持多选模式', async () => {
+      await wrapper.setProps({
+        selectMode: 'checkbox'
+      })
+      await nextTick()
+
+      const checkboxElements = wrapper.findAll('.vant-table-checkbox')
+      expect(checkboxElements.length).toBeGreaterThan(0)
+    })
+
+    it('应该支持选择过滤', async () => {
+      const selectableFilter = (row: any) => row.status !== '离职'
+      
+      await wrapper.setProps({
+        selectableFilter
+      })
+      await nextTick()
+
+      // 验证离职员工不可选择的逻辑
+      const instance = wrapper.vm
+      expect(instance.isRowDisabled(mockData[3], 3)).toBe(true) // 赵六（离职）
+      expect(instance.isRowDisabled(mockData[0], 0)).toBe(false) // 张三（在职）
+    })
+
+    it('应该支持最大选择数量限制', async () => {
+      await wrapper.setProps({
+        maxSelectCount: 2
+      })
+      await nextTick()
+
+      const instance = wrapper.vm
+      
+      // 模拟选择超过限制的情况
+      instance.internalSelectedKeys.value = new Set(['1', '2'])
+      expect(instance.isExceedMaxCount(2)).toBe(true)
+      expect(instance.isExceedMaxCount(1)).toBe(false)
+    })
+  })
+
+  describe('排序功能', () => {
+    it('应该支持列排序', async () => {
+      const sortableHeader = wrapper.find('.vant-th--sortable .vant-th__content')
+      expect(sortableHeader.exists()).toBe(true)
+
+      // 模拟点击排序
+      await sortableHeader.trigger('click')
+      await nextTick()
+      
+      // 验证排序状态变化（检查是否有排序事件或状态变化）
+      const instance = wrapper.vm
+      // 验证排序配置是否被设置
+      expect(instance.sortConfig.key).toBeTruthy()
+    })
+
+    it('应该正确处理排序方向', () => {
+      const instance = wrapper.vm
+      
+      // 测试升序
+      instance.sortConfig.value = { key: 'salary', direction: 'asc' }
+      expect(instance.sortConfig.value.direction).toBe('asc')
+
+      // 测试降序
+      instance.sortConfig.value = { key: 'salary', direction: 'desc' }
+      expect(instance.sortConfig.value.direction).toBe('desc')
+    })
+  })
+
+  describe('扩展功能', () => {
+    beforeEach(async () => {
+      await wrapper.setProps({
+        expandable: true
+      })
+      await nextTick()
+    })
+
+    it('启用扩展功能时应该显示扩展列', () => {
+      const expandHeaders = wrapper.findAll('.vant-th--expand')
+      expect(expandHeaders.length).toBeGreaterThan(0)
+    })
+
+    it('应该支持行展开/收起', () => {
+      const instance = wrapper.vm
+      const testRow = mockData[0]
+      const rowIndex = 0
+
+      // 初始状态应该是未展开
+      expect(instance.isExpanded(testRow, rowIndex)).toBe(false)
+
+      // 展开行
+      instance.toggleExpand(testRow, rowIndex)
+      expect(instance.isExpanded(testRow, rowIndex)).toBe(true)
+
+      // 收起行
+      instance.toggleExpand(testRow, rowIndex)
+      expect(instance.isExpanded(testRow, rowIndex)).toBe(false)
+    })
+  })
+
+  describe('固定列功能', () => {
+    beforeEach(async () => {
+      const headersWithFixed = [
+        { key: 'id', label: 'ID', width: 100, fixed: 'left' },
+        { key: 'name', label: '姓名', width: 120, fixed: 'left' },
+        { key: 'department', label: '部门' },
+        { key: 'salary', label: '薪资', width: 120 },
+        { key: 'status', label: '状态', width: 100, fixed: 'right' }
+      ]
+
+      await wrapper.setProps({
+        headers: headersWithFixed
+      })
+      await nextTick()
+    })
+
+    it('应该正确计算列信息', () => {
+      const instance = wrapper.vm
+      const columnsInfo = instance.columnsInfo
+
+      expect(columnsInfo.leftFixedColumns.length).toBe(2)
+      expect(columnsInfo.rightFixedColumns.length).toBe(1)
+      expect(columnsInfo.leftFixedWidth).toBeGreaterThan(0)
+      expect(columnsInfo.rightFixedWidth).toBeGreaterThan(0)
+    })
+
+    it('应该渲染固定列容器', () => {
+      const leftFixed = wrapper.find('.vant-table-fixed--left')
+      const rightFixed = wrapper.find('.vant-table-fixed--right')
+      
+      expect(leftFixed.exists()).toBe(true)
+      expect(rightFixed.exists()).toBe(true)
+    })
+  })
+
+  describe('加载状态', () => {
+    it('应该显示加载状态', async () => {
+      await wrapper.setProps({
+        loading: true
+      })
+      await nextTick()
+
+      const loadingElement = wrapper.find('.vant-table-loading')
+      expect(loadingElement.exists()).toBe(true)
+    })
+  })
+
+  describe('空数据状态', () => {
+    it('应该显示空数据提示', async () => {
+      await wrapper.setProps({
+        data: []
+      })
+      await nextTick()
+
+      const emptyElement = wrapper.find('.vant-empty-content')
+      expect(emptyElement.exists()).toBe(true)
+    })
+  })
+
+  describe('事件处理', () => {
+    it('应该正确触发行点击事件', async () => {
+      const firstRow = wrapper.find('.vant-tbody .vant-tr')
+      await firstRow.trigger('click')
+
+      expect(wrapper.emitted('row-click')).toBeTruthy()
+      const rowClickEvent = wrapper.emitted('row-click')[0][0]
+      expect(rowClickEvent.row).toEqual(mockData[0])
+      expect(rowClickEvent.rowIndex).toBe(0)
+    })
+
+    it('应该正确触发单元格点击事件', async () => {
+      const firstCell = wrapper.find('.vant-tbody .vant-tr .vant-td')
+      await firstCell.trigger('click')
+
+      expect(wrapper.emitted('cell-click')).toBeTruthy()
+    })
+  })
+
+  describe('工具方法', () => {
+    it('应该正确获取单元格值', () => {
+      const instance = wrapper.vm
+      const testRow = mockData[0]
+      
+      expect(instance.getCellValue(testRow, 'name')).toBe('张三')
+      expect(instance.getCellValue(testRow, 'salary')).toBe(25000)
+    })
+
+    it('应该正确判断总计行', () => {
+      const instance = wrapper.vm
+      const normalRow = mockData[0]
+      const totalRow = { ...mockData[0], isTotal: true }
+      
+      expect(instance.isRowTotal(normalRow)).toBe(false)
+      expect(instance.isRowTotal(totalRow)).toBe(true)
+    })
+
+    it('应该正确格式化单元格值', () => {
+      const instance = wrapper.vm
+      const currencyHeader = { type: 'currency' }
+      const numberHeader = { type: 'number' }
+      const percentHeader = { type: 'percent' }
+      
+      expect(instance.formatCellValue(25000, currencyHeader)).toBe('¥25,000')
+      expect(instance.formatCellValue(25000, numberHeader)).toBe('25,000')
+      expect(instance.formatCellValue(85, percentHeader)).toBe('85%')
+    })
+  })
+
+  describe('响应式数据', () => {
+    it('应该正确响应数据变化', async () => {
+      const newData = [
+        { id: 6, name: '新员工', department: '技术部', salary: 15000, status: '试用' }
+      ]
+
+      await wrapper.setProps({
+        data: newData
+      })
+      await nextTick()
+
+      const rows = wrapper.findAll('.vant-tbody .vant-tr')
+      // 由于可能有扩展行等，检查是否至少有一行
+      expect(rows.length).toBeGreaterThanOrEqual(1)
+    })
+
+    it('应该正确响应表头变化', async () => {
+      const newHeaders = [
+        { key: 'id', label: 'ID', width: 100 },
+        { key: 'name', label: '姓名', width: 120 }
+      ]
+
+      await wrapper.setProps({
+        headers: newHeaders
+      })
+      await nextTick()
+
+      const instance = wrapper.vm
+      expect(instance.allHeaders.length).toBe(2)
+    })
+  })
+
+  describe('API 方法', () => {
+    beforeEach(async () => {
+      await wrapper.setProps({
+        selectable: true,
+        rowKey: 'id'
+      })
+      await nextTick()
+    })
+
+    it('clearSelection 应该清空所有选择', () => {
+      const instance = wrapper.vm
+      
+      // 先选择一些行
+      instance.internalSelectedKeys.value = new Set(['1', '2'])
+      
+      // 清空选择
+      instance.clearSelection()
+      
+      expect(instance.selectedRowKeys.length).toBe(0)
+    })
+
+    it('setSelectedRowKeys 应该设置选中的行', () => {
+      const instance = wrapper.vm
+      
+      instance.setSelectedRowKeys(['1', '2', '3'])
+      
+      const selectedKeys = instance.getSelectedRowKeys()
+      expect(selectedKeys).toContain('1')
+      expect(selectedKeys).toContain('2')
+      expect(selectedKeys).toContain('3')
+    })
+
+    it('getSelectedRows 应该返回选中的行数据', () => {
+      const instance = wrapper.vm
+      
+      // 先设置选中状态
+      instance.internalSelectedKeys.value = new Set(['1', '2'])
+      
+      const selectedRows = instance.getSelectedRows()
+      expect(selectedRows.length).toBe(2)
+      expect(selectedRows[0].id).toBe(1)
+      expect(selectedRows[1].id).toBe(2)
+    })
+
+    it('toggleRowSelection 应该切换行选择状态', () => {
+      const instance = wrapper.vm
+      const testRow = mockData[0]
+      
+      // 初始状态未选中
+      expect(instance.isRowSelected(testRow, 0)).toBe(false)
+      
+      // 选中行
+      instance.toggleRowSelection(testRow, true)
+      expect(instance.isRowSelected(testRow, 0)).toBe(true)
+      
+      // 取消选中
+      instance.toggleRowSelection(testRow, false)
+      expect(instance.isRowSelected(testRow, 0)).toBe(false)
+    })
+  })
+})

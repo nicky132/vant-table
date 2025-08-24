@@ -1,0 +1,237 @@
+/* ========== Sticky固定列样式 ========== */
+.vant-th--sticky {
+  position: sticky;
+  z-index: 100;
+  background-color: var(--van-background);
+  /* iOS优化：防止固定列在拖拽时移动 */
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+.vant-td--sticky {
+  position: sticky;
+  z-index: 90;
+  background-color: var(--van-white);
+  /* iOS优化：防止固定列在拖拽时移动 */
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+/* 针对iOS设备的额外优化 */
+@supports (-webkit-touch-callout: none) {
+  /* iOS Safari专用 */
+  .vant-table-wrapper {
+    /* 防止整体表格被拖拽 */
+    -webkit-overflow-scrolling: touch;
+    /* 增强硬件加速 */
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+  
+  .vant-table-body {
+    /* 限制滚动行为 */
+    -webkit-overflow-scrolling: touch;
+    /* 防止边界回弹影响固定列 */
+    overscroll-behavior-x: contain;
+    overscroll-behavior-y: auto;
+  }
+  
+  .vant-th--sticky,
+  .vant-td--sticky {
+    /* iOS下的固定列额外保护 */
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    /* 强制硬件加速 */
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    /* 防止sub-pixel渲染问题 */
+    -webkit-font-smoothing: subpixel-antialiased;
+  }
+}
+
+/* iOS优化专用类 */
+.vant-table--ios-optimized {
+  /* 增强的iOS触摸处理 */
+  -webkit-overflow-scrolling: auto; /* 避免使用touch以防止回弹 */
+  overscroll-behavior: contain;
+  
+  .vant-table-body {
+    /* 精确控制滚动行为 */
+    -webkit-overflow-scrolling: auto;
+    overscroll-behavior-x: contain;
+    overscroll-behavior-y: contain;
+    /* 禁用iOS的滚动回弹 */
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+  }
+  
+  .vant-th--sticky,
+  .vant-td--sticky {
+    /* 额外的稳定性保证 */
+    -webkit-transform: translate3d(0, 0, 0) !important;
+    transform: translate3d(0, 0, 0) !important;
+    will-change: auto; /* 减少不必要的优化 */
+    /* 强制固定位置 */
+    position: -webkit-sticky !important;
+    position: sticky !important;
+    /* 防止被父级transform影响 */
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
+}
+
+/* 针对iOS的表格体额外保护 */
+@supports (-webkit-touch-callout: none) {
+  .vant-table--ios-optimized .vant-table-body {
+    /* 完全禁用iOS的滚动弹性 */
+    -webkit-overflow-scrolling: auto !important;
+    /* 防止拖拽溢出 */
+    overflow-x: auto;
+    overflow-y: auto;
+    /* 阻止触摸拖拽 */
+    touch-action: pan-x pan-y;
+  }
+  
+  /* 最高优先级的固定列保护 */
+  .vant-table--ios-optimized .vant-th--sticky,
+  .vant-table--ios-optimized .vant-td--sticky {
+    /* 强制硬件加速并固定 */
+    -webkit-transform: translate3d(0, 0, 0) !important;
+    transform: translate3d(0, 0, 0) !important;
+    /* 防止任何形式的移动 */
+    position: -webkit-sticky !important;
+    position: sticky !important;
+    /* 阻止层级混合 */
+    isolation: isolate;
+    /* 强制绘制独立层 */
+    contain: layout style paint;
+  }
+}
+
+/* VTable风格的固定列阴影效果 - 改进的连续阴影方案 */
+
+/* 清除所有单元格级别的阴影 */
+.vant-th--sticky,
+.vant-td--sticky {
+  box-shadow: none;
+}
+
+/* 表格容器需要设置为相对定位 */
+.vant-table-layout-wrapper {
+  position: relative;
+}
+
+/* 创建固定的阴影覆盖层 */
+.vant-table-layout-wrapper::after,
+.vant-table-layout-wrapper::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 8px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 120;
+}
+
+/* 左侧阴影（在左固定列右侧） */
+.vant-table-layout-wrapper::after {
+  left: var(--left-shadow-position, 0px);
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.05), transparent);
+}
+
+/* 右侧阴影（在右固定列左侧） */
+.vant-table-layout-wrapper::before {
+  right: var(--right-shadow-position, 0px);
+  background: linear-gradient(to left, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.05), transparent);
+}
+
+/* 当表格向右滚动时显示左侧阴影 */
+.vant-table-layout-wrapper[data-scroll-left="1"]::after {
+  opacity: 1;
+}
+
+/* 🔑 修复：当表格有可滚动内容时显示右侧阴影，不仅仅依赖滚动条存在 */
+.vant-table-layout-wrapper[data-scroll-right="1"]::before,
+.vant-table-layout-wrapper[data-has-scrollable-content="1"]::before {
+  opacity: 1;
+}
+
+/* 备用方案：表头和表体单独的阴影（如果需要） */
+.vant-table-header::after,
+.vant-table-body::after {
+  display: none;
+}
+
+.vant-table-header::before,
+.vant-table-body::before {
+  display: none;
+}
+
+/* ========== 深色模式支持（增强版） ========== */
+@media (prefers-color-scheme: dark) {
+  .vant-table-wrapper {
+    --van-text-color: #ffffff;
+    --van-text-color-2: #cccccc;
+    --van-text-color-3: #888888;
+    --van-border-color: #404040;
+    --van-background: #2a2a2a;
+    --van-white: #1a1a1a;
+    --van-hover-color: #333333;
+    --van-selected-color: #1a3a5c;
+  }
+
+  .vant-table-checkbox__icon,
+  .vant-table-radio__icon {
+    border-color: #666666;
+    background-color: #2a2a2a;
+  }
+
+  /* 深色模式下的hover效果 - 仅在PC端生效 */
+  @media (hover: hover) and (pointer: fine) {
+    .vant-table-checkbox__icon:hover,
+    .vant-table-radio__icon:hover {
+      border-color: var(--van-primary-color);
+    }
+  }
+
+  /* 深色模式外部滚动条样式 */
+  .vant-table-scroll-x-virtual {
+    background: #1a1a1a;
+    border-top-color: #404040;
+    box-shadow: 0 -1px 3px rgba(0,0,0,0.3);
+  }
+
+  .vant-table-scroll-x-wrapper {
+    background: #2a2a2a;
+  }
+
+  /* 滚动条hover效果 - 仅在PC端生效 */
+  @media (hover: hover) and (pointer: fine) {
+    .vant-table-scroll-x-wrapper:hover {
+      background: #333333;
+    }
+  }
+
+  .vant-table-scroll-x-space {
+    background: #404040;
+    border-color: #666666;
+  }
+
+  /* 滚动条手柄hover效果 - 仅在PC端生效 */
+  @media (hover: hover) and (pointer: fine) {
+    .vant-table-scroll-x-handle:hover .vant-table-scroll-x-space {
+      background: #555555;
+      border-color: #777777;
+    }
+  }
+
+  .vant-table-scroll-x-handle:active .vant-table-scroll-x-space,
+  .vant-table-scroll-x-handle--dragging .vant-table-scroll-x-space {
+    background: #666666;
+    border-color: #888888;
+  }
+}

@@ -1,0 +1,296 @@
+import { describe, it, expect } from 'vitest'
+import { mount } from '@vue/test-utils'
+import { nextTick } from 'vue'
+import VantTable from '../src/VantTable.vue'
+
+describe('VantTable Integration Tests', () => {
+  const mockHeaders = [
+    { key: 'id', label: 'ID', width: 100, fixed: 'left', sortable: true },
+    { key: 'name', label: '姓名', width: 120, fixed: 'left', sortable: true },
+    { key: 'department', label: '部门', sortable: true, filterable: true },
+    { key: 'salary', label: '薪资', width: 120, sortable: true, type: 'currency' },
+    { key: 'status', label: '状态', width: 100, fixed: 'right' }
+  ]
+
+  const mockData = [
+    { id: 1, name: '张三', department: '技术部', salary: 25000, status: '在职' },
+    { id: 2, name: '李四', department: '产品部', salary: 20000, status: '在职' },
+    { id: 3, name: '王五', department: '设计部', salary: 18000, status: '试用' },
+    { id: 4, name: '赵六', department: '技术部', salary: 30000, status: '离职' },
+    { id: 5, name: '钱七', department: '运营部', salary: 22000, status: '在职' }
+  ]
+
+  describe('完整功能集成测试', () => {
+    it('应该同时支持选择、排序、固定列和扩展功能', async () => {
+      const wrapper = mount(VantTable, {
+        props: {
+          headers: mockHeaders,
+          data: mockData,
+          selectable: true,
+          selectMode: 'checkbox',
+          expandable: true,
+          rowKey: 'id',
+          width: '100%',
+          height: 500
+        }
+      })
+
+      await nextTick()
+      const instance = wrapper.vm
+
+      // 验证基础功能
+      expect(wrapper.find('.vant-table-wrapper').exists()).toBe(true)
+      expect(wrapper.find('.vant-table-header').exists()).toBe(true)
+      expect(wrapper.find('.vant-table-body').exists()).toBe(true)
+
+      // 验证选择功能
+      expect(wrapper.find('.vant-th--selection').exists()).toBe(true)
+      expect(wrapper.findAll('.vant-table-checkbox').length).toBeGreaterThan(0)
+
+      // 验证扩展功能
+      expect(wrapper.find('.vant-th--expand').exists()).toBe(true)
+
+      // 验证固定列
+      expect(wrapper.find('.vant-table-fixed--left').exists()).toBe(true)
+      expect(wrapper.find('.vant-table-fixed--right').exists()).toBe(true)
+
+      // 验证排序功能
+      expect(wrapper.findAll('.vant-th--sortable').length).toBeGreaterThan(0)
+
+      // 测试列信息计算
+      const columnsInfo = instance.columnsInfo
+      expect(columnsInfo.leftFixedColumns.length).toBe(2)
+      expect(columnsInfo.rightFixedColumns.length).toBe(1)
+      expect(columnsInfo.computedHeaders.length).toBe(2) // department, salary
+    })
+
+    it('应该正确处理复杂的用户交互场景', async () => {
+      const wrapper = mount(VantTable, {
+        props: {
+          headers: mockHeaders,
+          data: mockData,
+          selectable: true,
+          selectMode: 'checkbox',
+          expandable: true,
+          selectOnRowClick: true,
+          maxSelectCount: 3,
+          rowKey: 'id'
+        }
+      })
+
+      await nextTick()
+      const instance = wrapper.vm
+
+      // 场景1: 点击行选择
+      const firstRow = wrapper.find('.vant-tbody .vant-tr')
+      await firstRow.trigger('click')
+      
+      expect(instance.selectedRowKeys.length).toBe(1)
+      expect(wrapper.emitted('row-click')).toBeTruthy()
+
+      // 场景2: 扩展行
+      const testRow = mockData[0]
+      instance.toggleExpand(testRow, 0)
+      expect(instance.isExpanded(testRow, 0)).toBe(true)
+      expect(wrapper.emitted('expand-change')).toBeTruthy()
+
+      // 场景3: 排序
+      const sortableHeader = wrapper.find('.vant-th--sortable .vant-th__content')
+      await sortableHeader.trigger('click')
+      expect(wrapper.emitted('sort-change')).toBeTruthy()
+
+      // 场景4: 达到选择上限
+      instance.handleRowSelect(mockData[1], 1, true)
+      instance.handleRowSelect(mockData[2], 2, true)
+      instance.handleRowSelect(mockData[4], 4, true) // 应该被限制
+      
+      expect(instance.selectedRowKeys.length).toBe(3) // 包括之前点击选择的行
+    })
+
+    it('应该正确处理数据更新和状态同步', async () => {
+      const wrapper = mount(VantTable, {
+        props: {
+          headers: mockHeaders,
+          data: mockData,
+          selectable: true,
+          selectMode: 'checkbox',
+          rowKey: 'id'
+        }
+      })
+
+      await nextTick()
+      const instance = wrapper.vm
+
+      // 选择一些行
+      instance.handleRowSelect(mockData[0], 0, true)
+      instance.handleRowSelect(mockData[1], 1, true)
+      expect(instance.selectedRowKeys.length).toBe(2)
+
+      // 更新数据（模拟删除第一行）
+      const newData = mockData.slice(1)
+      await wrapper.setProps({ data: newData })
+      await nextTick()
+
+      // 验证数据更新后的状态
+      const rows = wrapper.findAll('.vant-tbody .vant-tr')
+      expect(rows.length).toBe(newData.length)
+    })
+
+    it('应该正确处理选择过滤和禁用状态', async () => {
+      const selectableFilter = (row: any) => row.status !== '离职' && row.salary >= 20000
+
+      const wrapper = mount(VantTable, {
+        props: {
+          headers: mockHeaders,
+          data: mockData,
+          selectable: true,
+          selectMode: 'checkbox',
+          selectableFilter,
+          rowKey: 'id'
+        }
+      })
+
+      await nextTick()
+      const instance = wrapper.vm
+
+      // 验证选择过滤
+      expect(instance.isRowDisabled(mockData[3], 3)).toBe(true) // 离职员工
+      expect(instance.isRowDisabled(mockData[2], 2)).toBe(true) // 薪资低于20000
+      expect(instance.isRowDisabled(mockData[0], 0)).toBe(false) // 符合条件
+
+      // 验证可选行计算
+      const selectableCount = instance.selectableRows.length
+      expect(selectableCount).toBe(3) // 张三、李四、钱七
+
+      // 全选应该只选择可选行
+      instance.handleSelectAll(true)
+      expect(instance.selectedRowKeys.length).toBe(selectableCount)
+    })
+
+    it('应该正确处理表格尺寸和响应式', async () => {
+      const wrapper = mount(VantTable, {
+        props: {
+          headers: mockHeaders,
+          data: mockData,
+          width: 800,
+          height: 400,
+          minWidth: 600
+        }
+      })
+
+      await nextTick()
+
+      // 验证容器样式
+      const container = wrapper.find('.vant-table-wrapper')
+      expect(container.attributes('style')).toContain('width: 800px')
+      expect(container.attributes('style')).toContain('height: 400px')
+
+      // 模拟宽度变化
+      await wrapper.setProps({ width: '100%' })
+      await nextTick()
+
+      expect(container.attributes('style')).toContain('width: 100%')
+    })
+  })
+
+  describe('错误处理和边界情况', () => {
+    it('应该正确处理空数据', async () => {
+      const wrapper = mount(VantTable, {
+        props: {
+          headers: mockHeaders,
+          data: [],
+          selectable: true
+        }
+      })
+
+      await nextTick()
+      const instance = wrapper.vm
+
+      expect(wrapper.find('.vant-empty-content').exists()).toBe(true)
+      expect(instance.selectedRowKeys.length).toBe(0)
+      expect(instance.selectableRows.length).toBe(0)
+    })
+
+    it('应该正确处理无效的选择键值', async () => {
+      const wrapper = mount(VantTable, {
+        props: {
+          headers: mockHeaders,
+          data: mockData,
+          selectable: true,
+          selectedKeys: ['999', '1000'], // 不存在的ID
+          rowKey: 'id'
+        }
+      })
+
+      await nextTick()
+      const instance = wrapper.vm
+
+      // 无效的键值应该被过滤掉
+      expect(instance.selectedRowKeys.length).toBe(0)
+    })
+
+    it('应该正确处理组件方法调用', async () => {
+      const wrapper = mount(VantTable, {
+        props: {
+          headers: mockHeaders,
+          data: mockData,
+          selectable: true,
+          rowKey: 'id'
+        }
+      })
+
+      await nextTick()
+      const instance = wrapper.vm
+
+      // 测试 API 方法
+      instance.setSelectedRowKeys(['1', '2'])
+      expect(instance.selectedRowKeys.length).toBe(2)
+
+      instance.clearSelection()
+      expect(instance.selectedRowKeys.length).toBe(0)
+
+      instance.selectAllCurrentPage()
+      expect(instance.selectedRowKeys.length).toBeGreaterThan(0)
+
+      instance.invertSelection()
+      // 反选后应该选中之前未选中的行
+      expect(instance.selectedRowKeys.length).toBeGreaterThan(0)
+    })
+  })
+
+  describe('性能和优化测试', () => {
+    it('应该正确处理大量数据', async () => {
+      const largeData = Array.from({ length: 1000 }, (_, i) => ({
+        id: i + 1,
+        name: `员工${i + 1}`,
+        department: '技术部',
+        salary: 20000 + Math.random() * 30000,
+        status: '在职'
+      }))
+
+      const wrapper = mount(VantTable, {
+        props: {
+          headers: mockHeaders,
+          data: largeData,
+          selectable: true,
+          rowKey: 'id'
+        }
+      })
+
+      await nextTick()
+      const instance = wrapper.vm
+
+      // 验证大量数据的基本功能
+      expect(instance.filteredAndSortedData.length).toBe(1000)
+      expect(instance.selectableRows.length).toBe(1000)
+
+      // 测试批量选择性能
+      const start = performance.now()
+      instance.selectAllCurrentPage()
+      const end = performance.now()
+
+      expect(end - start).toBeLessThan(100) // 期望在100ms内完成
+      expect(instance.selectedRowKeys.length).toBe(1000)
+    })
+  })
+})
