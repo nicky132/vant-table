@@ -4,7 +4,7 @@ import { resolve } from 'path'
 import { fileURLToPath, URL } from 'node:url'
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
-const demoHtmlPath = resolve(__dirname, 'demo/index.html')
+const demoHtmlPath = resolve(__dirname, 'demo-final/index.html')
 
 export default defineConfig({
   plugins: [vue()],
@@ -24,9 +24,11 @@ export default defineConfig({
     }
   },
   resolve: {
-    alias: {
-      '@': resolve(__dirname, 'src')
-    }
+    alias: [
+      { find: '@', replacement: resolve(__dirname, 'src') },
+      { find: '@cc/vant-table/dist/index.css', replacement: resolve(__dirname, 'src/styles/VantTable.less') },
+      { find: '@cc/vant-table', replacement: resolve(__dirname, 'src/index.ts') }
+    ]
   },
   server: {
     port: 3001,
