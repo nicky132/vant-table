@@ -4,328 +4,104 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VantTable 在线演示</title>
-    <meta name="description" content="基于 Vant UI 的功能丰富的表格组件在线演示">
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📊</text></svg>">
-    
-    <!-- Vue 3 和 Vant 4 -->
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script src="https://unpkg.com/vant@4/lib/vant.min.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/vant@4/lib/index.css">
-    
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-        }
-        .demo-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        .header {
-            text-align: center;
-            color: white;
-            margin-bottom: 30px;
-        }
-        .header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            font-weight: 700;
-        }
-        .header p {
-            font-size: 1.2rem;
-            opacity: 0.9;
-        }
-        .demo-card {
-            background: white;
-            border-radius: 16px;
-            padding: 30px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            margin-bottom: 30px;
-        }
-        .demo-title {
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-            color: #333;
-            font-weight: 600;
-        }
-        .demo-description {
-            color: #666;
-            margin-bottom: 20px;
-            font-size: 0.95rem;
-        }
-        .github-link {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: rgba(255,255,255,0.2);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 25px;
-            text-decoration: none;
-            backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
-            z-index: 1000;
-        }
-        .github-link:hover {
-            background: rgba(255,255,255,0.3);
-            transform: translateY(-2px);
-        }
-        .npm-link {
-            display: inline-block;
-            background: #cb3837;
-            color: white;
-            padding: 8px 16px;
-            border-radius: 8px;
-            text-decoration: none;
-            margin: 0 5px 20px 0;
-            font-size: 0.9rem;
-            transition: background 0.3s ease;
-        }
-        .npm-link:hover {
-            background: #a12e2a;
-        }
-        .selection-info {
-            margin-bottom: 15px;
-            color: #666;
-            padding: 10px;
-            background: #f8f9fa;
-            border-radius: 8px;
-        }
-        .demo-table {
-            border: 1px solid #ebeef5;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-        .table-header {
-            background: #f8f9fa;
-            display: flex;
-            border-bottom: 1px solid #ebeef5;
-        }
-        .table-cell {
-            padding: 12px 16px;
-            flex: 1;
-            border-right: 1px solid #ebeef5;
-            font-weight: 500;
-            color: #333;
-        }
-        .table-cell:last-child {
-            border-right: none;
-        }
-        .table-row {
-            display: flex;
-            border-bottom: 1px solid #f0f0f0;
-            transition: background 0.2s ease;
-        }
-        .table-row:hover {
-            background: #fafafa;
-        }
-        .table-row:last-child {
-            border-bottom: none;
-        }
-        .table-data {
-            padding: 12px 16px;
-            flex: 1;
-            border-right: 1px solid #f0f0f0;
-            color: #666;
-        }
-        .table-data:last-child {
-            border-right: none;
-        }
-        .status-tag {
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            font-weight: 500;
-        }
-        .status-normal {
-            background: #e6f7ff;
-            color: #1890ff;
-        }
-        .status-disabled {
-            background: #fff2e8;
-            color: #fa8c16;
-        }
+        body { margin: 0; font-family: sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { text-align: center; color: white; margin-bottom: 30px; }
+        .header h1 { font-size: 2.5rem; margin-bottom: 10px; }
+        .demo-card { background: white; border-radius: 16px; padding: 30px; margin-bottom: 30px; }
+        .demo-title { font-size: 1.5rem; color: #333; margin-bottom: 15px; }
+        .table { border: 1px solid #eee; border-radius: 8px; overflow: hidden; }
+        .table-header { background: #f5f5f5; display: flex; }
+        .table-cell { padding: 12px; flex: 1; border-right: 1px solid #eee; font-weight: bold; }
+        .table-row { display: flex; border-bottom: 1px solid #f0f0f0; }
+        .table-row:hover { background: #fafafa; }
+        .table-data { padding: 12px; flex: 1; border-right: 1px solid #f0f0f0; }
     </style>
 </head>
 <body>
     <div id="app"></div>
-
     <script>
-        const { createApp, ref, computed } = Vue;
-        const { showToast } = vant;
-
-        // 模拟表格数据
-        const generateTableData = (count = 40) => {
-            const data = [];
-            const departments = ['技术部', '产品部', '运营部', '设计部', '市场部'];
-            
-            for (let i = 1; i <= count; i++) {
-                data.push({
-                    id: i,
-                    name: `用户${i}`,
-                    department: departments[Math.floor(Math.random() * departments.length)],
-                    email: `chengsanshiba@example.com`,
-                    phone: `1380013800${i.toString().padStart(2, '0')}`,
-                    status: i === 39 ? '禁用' : '正常'
-                });
-            }
-            return data;
-        };
-
-        // VantTable组件
-        const VantTable = {
-            props: {
-                headers: Array,
-                data: Array,
-                height: Number,
-                selectable: Boolean,
-                selectMode: String,
-                maxSelectCount: Number
-            },
-            setup(props, { emit }) {
-                const selectedKeys = ref([]);
-
-                const toggleSelect = (item) => {
-                    const index = selectedKeys.value.indexOf(item.id);
-                    if (index > -1) {
-                        selectedKeys.value.splice(index, 1);
-                    } else {
-                        if (props.maxSelectCount && selectedKeys.value.length >= props.maxSelectCount) {
-                            showToast('最多只能选择 ' + props.maxSelectCount + ' 项');
-                            return;
-                        }
-                        selectedKeys.value.push(item.id);
-                    }
-                    emit('selection-change', { selectedRows: selectedKeys.value });
-                };
-
-                const toggleSelectAll = () => {
-                    if (selectedKeys.value.length === props.data.length) {
-                        selectedKeys.value = [];
-                    } else {
-                        selectedKeys.value = props.data.slice(0, props.maxSelectCount || props.data.length).map(item => item.id);
-                    }
-                    emit('selection-change', { selectedRows: selectedKeys.value });
-                };
-
-                const isSelected = (item) => selectedKeys.value.includes(item.id);
-                const isAllSelected = computed(() => selectedKeys.value.length === props.data.length);
-
-                return {
-                    selectedKeys,
-                    toggleSelect,
-                    toggleSelectAll,
-                    isSelected,
-                    isAllSelected
-                };
-            },
-            template: `
-                <div class="demo-table" :style="{ height: height + 'px', overflow: 'auto' }">
-                    <div class="table-header">
-                        <div v-if="selectable" class="table-cell" style="flex: 0 0 50px; text-align: center;">
-                            <input type="checkbox" :checked="isAllSelected" @change="toggleSelectAll" v-if="selectMode === 'checkbox'">
-                        </div>
-                        <div v-for="header in headers" :key="header.key" class="table-cell" :style="{ flex: header.width ? '0 0 ' + header.width + 'px' : '1' }">
-                            {{ header.label }}
-                        </div>
-                    </div>
-                    <div v-for="item in data" :key="item.id" class="table-row">
-                        <div v-if="selectable" class="table-data" style="flex: 0 0 50px; text-align: center;">
-                            <input type="checkbox" :checked="isSelected(item)" @change="toggleSelect(item)" v-if="selectMode === 'checkbox'">
-                        </div>
-                        <div v-for="header in headers" :key="header.key" class="table-data" :style="{ flex: header.width ? '0 0 ' + header.width + 'px' : '1' }">
-                            <span v-if="header.key === 'status'" :class="['status-tag', item.status === '正常' ? 'status-normal' : 'status-disabled']">
-                                {{ item[header.key] }}
-                            </span>
-                            <span v-else>{{ item[header.key] }}</span>
-                        </div>
-                    </div>
-                </div>
-            `
-        };
-
+        const { createApp, ref } = Vue;
+        
         const app = createApp({
-            components: {
-                VantTable
-            },
             setup() {
-                const tableData = generateTableData(40);
-                const selectedKeys = ref([]);
-
-                const basicHeaders = [
-                    { key: 'id', label: 'ID', width: 80 },
-                    { key: 'name', label: '姓名', width: 120 },
-                    { key: 'department', label: '部门' },
-                    { key: 'email', label: '邮箱' },
-                    { key: 'phone', label: '电话', width: 140 },
-                    { key: 'status', label: '状态', width: 100 }
+                const tableData = [
+                    { id: 36, name: '用户36', department: '技术部', email: 'chengsanshiba@example.com', phone: '13800138036', status: '正常' },
+                    { id: 37, name: '用户37', department: '产品部', email: 'zengsanshijiu@example.com', phone: '13800138037', status: '正常' },
+                    { id: 38, name: '用户38', department: '运营部', email: 'tiansishi@example.com', phone: '13800138038', status: '正常' },
+                    { id: 39, name: '用户39', department: '设计部', email: 'yuansishiyi@example.com', phone: '13800138039', status: '禁用' },
+                    { id: 40, name: '用户40', department: '市场部', email: 'dengsishier@example.com', phone: '13800138040', status: '正常' }
                 ];
 
-                const handleSelectionChange = (event) => {
-                    selectedKeys.value = event.selectedRows;
+                const selectedRows = ref([]);
+                
+                const toggleSelect = (item) => {
+                    const index = selectedRows.value.findIndex(row => row.id === item.id);
+                    if (index > -1) {
+                        selectedRows.value.splice(index, 1);
+                    } else {
+                        if (selectedRows.value.length >= 3) {
+                            vant.showToast('最多只能选择3项');
+                            return;
+                        }
+                        selectedRows.value.push(item);
+                    }
                 };
 
-                return {
-                    tableData,
-                    basicHeaders,
-                    selectedKeys,
-                    handleSelectionChange
-                };
+                const isSelected = (item) => selectedRows.value.some(row => row.id === item.id);
+
+                return { tableData, selectedRows, toggleSelect, isSelected };
             },
             template: `
-                <div class="demo-container">
-                    <a href="https://github.com/nicky132/vant-table" class="github-link" target="_blank">
-                        ⭐ GitHub
-                    </a>
-
+                <div class="container">
                     <div class="header">
                         <h1>🚀 VantTable 组件预览</h1>
                         <p>基于 Vant UI 的功能丰富的表格组件</p>
-                        <div style="margin-top: 20px;">
-                            <a href="https://www.npmjs.com/package/@nicky132/vant-table" class="npm-link" target="_blank">
-                                📦 NPM
-                            </a>
-                            <a href="/vant-table/" class="npm-link" target="_blank" style="background: #24292e;">
-                                📖 返回文档
-                            </a>
+                    </div>
+
+                    <div class="demo-card">
+                        <div class="demo-title">🚀 基础表格 - 支持上拉加载更多和复选框多行高亮</div>
+                        <div class="table">
+                            <div class="table-header">
+                                <div class="table-cell" style="flex: 0 0 50px;"></div>
+                                <div class="table-cell" style="flex: 0 0 80px;">ID</div>
+                                <div class="table-cell" style="flex: 0 0 120px;">姓名</div>
+                                <div class="table-cell">部门</div>
+                                <div class="table-cell">邮箱</div>
+                                <div class="table-cell" style="flex: 0 0 140px;">电话</div>
+                                <div class="table-cell" style="flex: 0 0 100px;">状态</div>
+                                <div class="table-cell" style="flex: 0 0 100px;">操作</div>
+                            </div>
+                            <div v-for="item in tableData" :key="item.id" class="table-row" :style="{ background: isSelected(item) ? '#e6f7ff' : 'transparent' }">
+                                <div class="table-data" style="flex: 0 0 50px; text-align: center;">
+                                    <input type="checkbox" :checked="isSelected(item)" @change="toggleSelect(item)">
+                                </div>
+                                <div class="table-data" style="flex: 0 0 80px;">{{ item.id }}</div>
+                                <div class="table-data" style="flex: 0 0 120px;">{{ item.name }}</div>
+                                <div class="table-data">{{ item.department }}</div>
+                                <div class="table-data">{{ item.email }}</div>
+                                <div class="table-data" style="flex: 0 0 140px;">{{ item.phone }}</div>
+                                <div class="table-data" style="flex: 0 0 100px;">
+                                    <span :style="{ padding: '4px 8px', borderRadius: '4px', fontSize: '0.8rem', background: item.status === '正常' ? '#e6f7ff' : '#fff2e8', color: item.status === '正常' ? '#1890ff' : '#fa8c16' }">{{ item.status }}</span>
+                                </div>
+                                <div class="table-data" style="flex: 0 0 100px;">
+                                    <button style="padding: 4px 8px; margin-right: 5px; border: none; background: #1890ff; color: white; border-radius: 4px;">编辑</button>
+                                    <button style="padding: 4px 8px; border: none; background: #ff4d4f; color: white; border-radius: 4px;">删除</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
                     <div class="demo-card">
-                        <h2 class="demo-title">🚀 基础表格 - 支持上拉加载更多和复选框多行高亮</h2>
-                        <p class="demo-description">展示基本的表格功能，包括数据展示和基础操作</p>
-                        <VantTable
-                            :headers="basicHeaders"
-                            :data="tableData.slice(35, 45)"
-                            :height="400"
-                        />
-                    </div>
-
-                    <div class="demo-card">
-                        <h2 class="demo-title">选中的行:</h2>
-                        <div class="selection-info">
-                            已选择: {{ selectedKeys.length }} 项
-                            <span v-if="selectedKeys.length > 0">
-                                ({{ selectedKeys.join(', ') }})
-                            </span>
+                        <div class="demo-title">选中的行:</div>
+                        <p>已选择: {{ selectedRows.length }} 项 (最多3项)</p>
+                        <div v-if="selectedRows.length > 0">
+                            <p v-for="row in selectedRows" :key="row.id">{{ row.name }} - {{ row.department }}</p>
                         </div>
-                        <h2 class="demo-title">加载状态控制:</h2>
-                        <VantTable
-                            :headers="basicHeaders"
-                            :data="tableData.slice(10, 25)"
-                            :height="400"
-                            selectable
-                            select-mode="checkbox"
-                            :max-select-count="3"
-                            @selection-change="handleSelectionChange"
-                        />
                     </div>
                 </div>
             `
