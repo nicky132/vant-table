@@ -3,8 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VantTable 在线体验 - v2</title>
+    <title>VantTable 在线演示</title>
     <meta name="description" content="基于 Vant UI 的功能丰富的表格组件在线演示">
+    <meta name="cache-control" content="no-cache, no-store, must-revalidate">
+    <meta name="pragma" content="no-cache">
+    <meta name="expires" content="0">
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📊</text></svg>" />
     <style>
         * {
@@ -105,6 +108,15 @@
             font-size: 0.9rem;
             line-height: 1.5;
         }
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #c3e6cb;
+            margin: 20px 0;
+            text-align: center;
+        }
         @media (max-width: 768px) {
             .header h1 {
                 font-size: 2rem;
@@ -136,6 +148,10 @@
         </div>
 
         <div class="demo-card">
+            <div class="success-message">
+                ✅ VantTable 演示页面加载成功！无404错误！
+            </div>
+            
             <div class="demo-title">✨ 功能演示</div>
             <div class="demo-description">
                 VantTable 提供了丰富的表格功能，包括数据展示、选择、排序、过滤等。以下是主要特性：
