@@ -1,4 +1,6 @@
 import { defineConfig } from 'vitepress'
+import { copyFileSync, mkdirSync } from 'fs'
+import { resolve } from 'path'
 
 export default defineConfig({
   title: 'VantTable',
@@ -10,6 +12,22 @@ export default defineConfig({
     // 忽略演示页面链接，因为它会在构建后复制到正确位置
     /^\/vant-table\/demo/
   ],
+  
+  // 构建钩子：复制demo文件
+  buildEnd(siteConfig) {
+    try {
+      const demoDir = resolve(siteConfig.outDir, 'demo')
+      mkdirSync(demoDir, { recursive: true })
+      
+      // 复制demo文件到输出目录
+      copyFileSync(
+        resolve(__dirname, '../../demo/index.html'),
+        resolve(demoDir, 'index.html')
+      )
+    } catch (error) {
+      console.warn('Failed to copy demo files:', error)
+    }
+  },
   
   themeConfig: {
     nav: [
